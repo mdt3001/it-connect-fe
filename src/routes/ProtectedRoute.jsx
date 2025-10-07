@@ -1,8 +1,9 @@
 import React from 'react'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
-function ProtectedRoute() {
+const ProtectedRoute = ({requiredRole}) => {
   return (
-    <div>ProtectedRoute</div>
+    <Outlet />
   )
 }
 
