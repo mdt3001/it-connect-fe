@@ -9,7 +9,6 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { form, tr } from "framer-motion/client";
 
 function Login() {
   const [formData, setFormData] = React.useState({
@@ -22,7 +21,7 @@ function Login() {
     loading: false,
     error: {},
     showPassword: false,
-    success: true,
+    success: false,
   });
 
   const validateEmail = (email) => {
