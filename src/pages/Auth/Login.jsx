@@ -10,7 +10,11 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { validateEmail } from "../utils/helper";
+import axiosInstance from "../utils/axiosInstance";
+import { API_PATHS } from "../utils/apiPaths";
+import { useAuth } from "../../context/AuthContext";
 function Login() {
+  const {login} = useAuth();
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
@@ -23,8 +27,6 @@ function Login() {
     showPassword: false,
     success: false,
   });
-
-  
 
   const validatePassword = (password) => {
     if (!password.trim()) return "Mật khẩu không được để trống";
@@ -65,6 +67,33 @@ function Login() {
     setFormState((prev) => ({ ...prev, loading: true, error: {} }));
     try {
       // Simulate API call
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email: formData.email,
+        password: formData.password,
+        rememberMe: formData.rememberMe,
+      });
+
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        success: true,
+        error: {},
+      }));
+
+      const { token, user } = response.data;
+      if (token) {
+        login(response.data, token);
+        setTimeout(() => {
+          window.location.href =
+            role === "employer" ? "/employer-dashboard" : "/find-jobs";
+        }, 2000);
+      }
+
+      setTimeout(() => {
+        const redirectPath =
+          user.role === "employer" ? "/employer-dashboard" : "/find-jobs";
+        window.location.href = redirectPath;
+      }, 1500);
     } catch (error) {
       setFormState((prev) => ({
         ...prev,
