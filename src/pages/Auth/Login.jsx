@@ -9,7 +9,7 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-
+import { validateEmail } from "../utils/helper";
 function Login() {
   const [formData, setFormData] = React.useState({
     email: "",
@@ -24,12 +24,7 @@ function Login() {
     success: false,
   });
 
-  const validateEmail = (email) => {
-    if (!email.trim()) return "Email không được để trống";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return "Email không hợp lệ";
-    return "";
-  };
+  
 
   const validatePassword = (password) => {
     if (!password.trim()) return "Mật khẩu không được để trống";
