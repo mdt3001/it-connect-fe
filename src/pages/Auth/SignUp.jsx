@@ -23,9 +23,11 @@ import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
 import uploadImage from "../utils/uploadImage";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const SignUp = () => {
   const { login } = useAuth();
+  const navigate = useNavigate(); // Initialize useNavigate
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -54,114 +56,115 @@ const SignUp = () => {
       }));
     }
   };
-};
 
-const handleRoleChange = (role) => {
-  setFormData((prev) => ({ ...prev, role }));
-  if (formState.error?.role) {
-    setFormState((prev) => ({
-      ...prev,
-      error: { ...prev.error, role: "" },
-    }));
-  }
-};
-
-const handleAvatarChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const error = validateAvatar(file);
-    if (error) {
+  const handleRoleChange = (role) => {
+    setFormData((prev) => ({ ...prev, role }));
+    if (formState.error?.role) {
       setFormState((prev) => ({
         ...prev,
-        error: { ...prev.error, avatar: error },
+        error: { ...prev.error, role: "" },
       }));
-      return;
     }
-  }
-  setFormData((prev) => ({ ...prev, avatar: file }));
-  //create preview
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    setFormState((prev) => ({
-      ...prev,
-      avatarPreview: e.target.result,
-      error: { ...prev.error, avatar: "" },
-    }));
-  };
-  reader.readAsDataURL(file);
-};
-
-const validateForm = () => {
-  const errors = {
-    fullName: formData.fullName ? "" : "Họ và tên không được để trống",
-    email: validateEmail(formData.email),
-    password: validatePassword(formData.password),
-    role: formData.role ? "" : "Vui lòng chọn vai trò",
-    avatar: "",
   };
 
-  // remove empty errors
-  Object.keys(errors).forEach((key) => {
-    if (!errors[key]) delete errors[key];
-  });
-
-  setFormState((prev) => ({ ...prev, error: errors }));
-  return Object.keys(errors).length === 0;
-};
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validateForm()) return;
-  setFormState((prev) => ({ ...prev, loading: true, error: {} }));
-  try {
-    // Simulate API call
-    let avatarUrl = "";
-    if (formData.avatar) {
-      // Upload avatar and get URL
-      const imgUploadResponse = await uploadImage(formData.avatar);
-      avatarUrl = imgUploadResponse.imageUrl;
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const error = validateAvatar(file);
+      if (error) {
+        setFormState((prev) => ({
+          ...prev,
+          error: { ...prev.error, avatar: error },
+        }));
+        return;
+      }
     }
+    setFormData((prev) => ({ ...prev, avatar: file }));
+    //create preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFormState((prev) => ({
+        ...prev,
+        avatarPreview: e.target.result,
+        error: { ...prev.error, avatar: "" },
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
 
-    // Call signup API
-    const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
-      name: formData.fullName,
-      email: formData.email,
-      password: formData.password,
-      role: formData.role,
-      avatar: avatarUrl || "",
+  const validateForm = () => {
+    const errors = {
+      fullName: formData.fullName ? "" : "Họ và tên không được để trống",
+      email: validateEmail(formData.email),
+      password: validatePassword(formData.password),
+      role: formData.role ? "" : "Vui lòng chọn vai trò",
+      avatar: "",
+    };
+
+    // remove empty errors
+    Object.keys(errors).forEach((key) => {
+      if (!errors[key]) delete errors[key];
     });
 
-    setFormState((prev) => ({
-      ...prev,
-      loading: false,
-      success: true,
-      error: {},
-    }));
+    setFormState((prev) => ({ ...prev, error: errors }));
+    return Object.keys(errors).length === 0;
+  };
 
-    const { token } = response.data;
-    if (token) {
-      login(response.data, token);
-      setTimeout(() => {
-        window.location.href =
-          role === "employer" ? "/employer-dashboard" : "/find-jobs";
-      }, 2000);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    setFormState((prev) => ({ ...prev, loading: true, error: {} }));
+    try {
+      // Simulate API call
+      let avatarUrl = "";
+      if (formData.avatar) {
+        // Upload avatar and get URL
+        const imgUploadResponse = await uploadImage(formData.avatar);
+        avatarUrl = imgUploadResponse.imageUrl;
+      }
+
+      // Call signup API
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        avatar: avatarUrl || "",
+      });
+
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        success: true,
+        error: {},
+      }));
+
+      const { result } = response.data; // Access the result object
+      const { token, ...userData } = result; // Extract token and user data
+
+      if (token) {
+        login(userData, token); // Pass userData and token to login function
+
+        // Redirect based on user role
+        const redirectPath =
+          userData.role === "employer" ? "/employer-dashboard" : "/find-jobs";
+        setTimeout(() => {
+          navigate(redirectPath); // Use navigate for redirection
+        }, 1500);
+      }
+    } catch (error) {
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        error: {
+          ...prev.error,
+          submit:
+            error.response?.data?.message ||
+            "Đã có lỗi xảy ra. Vui lòng thử lại.",
+        },
+      }));
     }
-
-    setTimeout(() => {
-      const redirectPath =
-        user.role === "employer" ? "/employer-dashboard" : "/find-jobs";
-      window.location.href = redirectPath;
-    }, 1500);
-  } catch (error) {
-    setFormState((prev) => ({
-      ...prev,
-      loading: false,
-      error: {
-        ...prev.error,
-        submit: "Đã có lỗi xảy ra. Vui lòng thử lại.",
-      },
-    }));
-  }
+  };
 
   if (formState.success) {
     return (

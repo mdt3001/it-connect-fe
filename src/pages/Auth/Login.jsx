@@ -13,8 +13,11 @@ import { validateEmail } from "../utils/helper";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
 function Login() {
-  const {login} = useAuth();
+  const { login } = useAuth();
+  const navigate = useNavigate(); // Initialize useNavigate
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
@@ -73,6 +76,8 @@ function Login() {
         rememberMe: formData.rememberMe,
       });
 
+      console.log("Login response:", response.data);
+
       setFormState((prev) => ({
         ...prev,
         loading: false,
@@ -80,21 +85,21 @@ function Login() {
         error: {},
       }));
 
-      const { token, user } = response.data;
-      if (token) {
-        login(response.data, token);
-        setTimeout(() => {
-          window.location.href =
-            role === "employer" ? "/employer-dashboard" : "/find-jobs";
-        }, 2000);
-      }
+      const { result } = response.data; // Access the result object
+      const { token, ...userData } = result; // Extract token and user data
 
-      setTimeout(() => {
+      if (token) {
+        login(userData, token); // Pass userData and token to login function
+
+        // Redirect based on user role
         const redirectPath =
-          user.role === "employer" ? "/employer-dashboard" : "/find-jobs";
-        window.location.href = redirectPath;
-      }, 1500);
+          userData.role === "employer" ? "/employer-dashboard" : "/find-jobs";
+        setTimeout(() => {
+          navigate(redirectPath); // Use navigate for redirection
+        }, 1500);
+      }
     } catch (error) {
+      console.error("Login error:", error);
       setFormState((prev) => ({
         ...prev,
         loading: false,
