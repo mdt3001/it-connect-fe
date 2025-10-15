@@ -9,9 +9,9 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { validateEmail } from "../utils/helper";
-import axiosInstance from "../utils/axiosInstance";
-import { API_PATHS } from "../utils/apiPaths";
+import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 

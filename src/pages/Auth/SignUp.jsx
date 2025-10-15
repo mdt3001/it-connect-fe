@@ -18,11 +18,11 @@ import {
   validateEmail,
   validatePassword,
   validateAvatar,
-} from "../utils/helper";
-import axiosInstance from "../utils/axiosInstance";
-import { API_PATHS } from "../utils/apiPaths";
+} from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
-import uploadImage from "../utils/uploadImage";
+import uploadImage from "../../utils/uploadImage";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const SignUp = () => {
@@ -120,7 +120,7 @@ const SignUp = () => {
       if (formData.avatar) {
         // Upload avatar and get URL
         const imgUploadResponse = await uploadImage(formData.avatar);
-        avatarUrl = imgUploadResponse.imageUrl;
+        avatarUrl = imgUploadResponse.result?.imageUrl || "";
       }
 
       // Call signup API
