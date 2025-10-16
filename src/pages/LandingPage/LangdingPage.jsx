@@ -7,7 +7,7 @@ import Analytics from "./components/Analytics";
 
 function LangdingPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen sm:px-20 bg-white ">
       <Header />
       <Hero />
       <Features />

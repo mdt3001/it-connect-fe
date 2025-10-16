@@ -1,8 +1,11 @@
 import React from 'react'
+import DashboardLayout from '../../components/layout/DashboardLayout'
 
 function ManageJobs() {
   return (
-    <div>ManageJobs</div>
+    <DashboardLayout activeMenu="manage-jobs">
+      <div>ManageJobs</div>
+    </DashboardLayout>
   )
 }
 

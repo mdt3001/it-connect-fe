@@ -1,8 +1,11 @@
 import React from 'react'
+import DashboardLayout from '../../components/layout/DashboardLayout'
 
 function JobPostingForm() {
   return (
-    <div>JobPostingForm</div>
+    <DashboardLayout activeMenu="job-posting">
+      <div>JobPostingForm</div>
+    </DashboardLayout>
   )
 }
 

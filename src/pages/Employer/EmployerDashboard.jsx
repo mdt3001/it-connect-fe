@@ -41,7 +41,7 @@ const EmployerDashboard = () => {
 
   return (
     <DashboardLayout activeMenu="employer-dashboard">
-      {!loading ? (
+      {loading ? (
           <LoadingSpinner />
       ) : (
         <div className="max-w-7xl mx-auto space-y-8">

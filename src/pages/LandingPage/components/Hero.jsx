@@ -2,12 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Search, ArrowRight, Users, Building2, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../../context/AuthContext";
 function Hero() {
   const navigate = useNavigate();
-  // Replace with actual auth/user state from your app
-  const isAuthenticated = true;
-  const user = { fullName: "mdt", role: "employer" };
+  const { isAuthenticated, user } = useAuth();
 
   const stats = [
     { icon: Users, label: "Người dùng", value: "1,200+" },

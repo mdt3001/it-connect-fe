@@ -18,7 +18,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-50 border-t border-gray-100">
+    <footer className="bg-white border-t border-gray-100">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}

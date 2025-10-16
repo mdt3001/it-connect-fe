@@ -2,19 +2,40 @@ import React from "react";
 import { Briefcase } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAuth } from "../../../context/AuthContext";
+import ProfileDropdown from "../../../components/layout/ProfileDropdown";
+import { useState, useEffect } from "react";
 
 function Header() {
-  const isAuthenticated = true; // Replace with actual authentication logic
-  const user = { fullName: "mdt", role: "employer" }; // Replace with actual user data
+  const { isAuthenticated, user, logout } = useAuth();
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const toggleProfileDropdown = () => {
+    setProfileDropdownOpen(!profileDropdownOpen);
+  };
+  const handleLogout = () => {
+    logout();
+    setProfileDropdownOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileDropdownOpen && !event.target.closest(".profile-dropdown")) {
+        setProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [profileDropdownOpen]);
+
   const navigate = useNavigate();
   return (
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 bg-white backdrop:blur-sm border-b border-gray-100"
+      className="fixed  top-0 left-0 right-0 bg-white backdrop:blur-sm border-b border-gray-100"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 sm:px-20">
         <div className="flex items-center justify-between h-16">
           {/* logo */}
           <div className="flex items-center space-x-3 cursor-pointer">
@@ -30,7 +51,7 @@ function Header() {
               onClick={() => navigate("/find-jobs")}
               className="text-gray-600 hover:text-gray-900 transition-colors font-medium cursor-pointer"
             >
-              Tìm việc ngay 
+              Tìm việc ngay
             </a>
 
             <a
@@ -50,19 +71,35 @@ function Header() {
           {/* Auth button */}
           <div className="flex items-center space-x-3">
             {isAuthenticated ? (
-              <div className="flex items-center space-x-3">
-                <span className="text-gray-700">Xin chào, {user?.fullName}</span>
-                <a
-                  href={
-                    user?.role === "employer"
-                      ? "/employer-dashboard"
-                      : "/find-jobs"
-                  }
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                >
-                  Dashboard
-                </a>
-              </div>
+              <>
+                {" "}
+                {user?.role === "employer" ? (
+                  <div className="flex items-center space-x-3">
+                    <span className="text-gray-700">
+                      Xin chào, {user?.name}
+                    </span>
+                    <a
+                      href={
+                        user?.role === "employer"
+                          ? "/employer-dashboard"
+                          : "/find-jobs"
+                      }
+                      className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    >
+                      Dashboard
+                    </a>
+                  </div>
+                ) : (
+                  <ProfileDropdown
+                    isOpen={profileDropdownOpen}
+                    onToggle={toggleProfileDropdown}
+                    avatar={user?.avatar}
+                    companyName={user?.name}
+                    email={user?.email}
+                    onLogout={handleLogout}
+                  />
+                )}
+              </>
             ) : (
               <div>
                 <a
