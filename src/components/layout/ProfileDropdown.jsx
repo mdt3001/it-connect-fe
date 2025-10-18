@@ -18,12 +18,12 @@ const ProfileDropdown = ({
         onClick={onToggle}
         className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
       >
-        <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+        <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
           {avatar ? (
             <img
               src={avatar}
               alt="Profile"
-              className="w-8 h-8 rounded-full object-cover"
+              className="w-10 h-10 rounded-full object-cover"
             />
           ) : (
             <User className="w-5 h-5 text-white" />
