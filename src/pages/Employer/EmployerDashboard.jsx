@@ -17,6 +17,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import Card from "../../components/EmployerComponents/EmployerDashboard/Card";
 import StatCard from "../../components/EmployerComponents/EmployerDashboard/StatCard";
 import JobDashboardCard from "../../components/EmployerComponents/EmployerDashboard/JobDashboardCard";
+import ApplicantDashboardCard from "../../components/EmployerComponents/EmployerDashboard/ApplicantDashboardCard";
 const fakeDashboardData = {
   counts: {
     activeJobs: 12,
@@ -56,6 +57,27 @@ const fakeDashboardData = {
         applications: 12,
         createdAt: "2025-10-20T09:15:00Z",
         status: "closed",
+      },
+    ],
+
+    recentApplicants: [
+      {
+        applicantId: "A1",
+        name: "Nguyễn Văn A",
+        position: "Senior Frontend Developer",
+        time: "2 hours ago",
+      },
+      {
+        applicantId: "A2",
+        name: "Trần Thị B",
+        position: "Backend Developer (Node.js)",
+        time: "5 hours ago",
+      },
+      {
+        applicantId: "A3",
+        name: "Lê Văn C",
+        position: "UI/UX Designer",
+        time: "1 day ago",
       },
     ],
   },
@@ -130,7 +152,7 @@ const EmployerDashboard = () => {
               subtitle="Các vị trí bạn đã đăng gần đây"
               headerAction={
                 <button
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  className="cursor-pointer text-sm text-blue-600 hover:text-blue-700 font-medium"
                   onClick={() => navigate("/manage-jobs")}
                 >
                   Xem tất cả
@@ -146,6 +168,37 @@ const EmployerDashboard = () => {
                 {fakeDashboardData?.data?.recentJobs?.length === 0 && (
                   <p className="text-gray-500">
                     Không có vị trí nào được đăng gần đây.
+                  </p>
+                )}
+              </div>
+            </Card>
+
+            <Card
+              title="Các ứng viên mới"
+              subtitle="Ứng viên đã nộp đơn gần đây"
+              headerAction={
+                <button
+                  className="cursor-pointer text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  onClick={() => navigate("/manage-jobs")}
+                >
+                  Xem tất cả
+                </button>
+              }
+            >
+              <div className="space-y-3">
+                {fakeDashboardData?.data?.recentApplicants
+                  ?.slice(0, 3)
+                  .map((data, index) => (
+                    <ApplicantDashboardCard
+                      key={index}
+                      applicant={data}
+                      position={data?.position}
+                      time={data?.time}
+                    />
+                  ))}
+                {fakeDashboardData?.data?.recentApplicants?.length === 0 && (
+                  <p className="text-gray-500">
+                    Không có ứng viên nào đã nộp đơn gần đây.
                   </p>
                 )}
               </div>
