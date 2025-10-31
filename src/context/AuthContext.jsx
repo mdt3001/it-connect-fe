@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 
 const AuthContext = createContext();
 
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
         setUser(newUserData);
     };
 
-    const value = { user, isAuthenticated, loading, login, logout, updateUser, checkAuthStatus };
+    const value = useMemo(() => ({ user, isAuthenticated, loading, login, logout, updateUser, checkAuthStatus }), [user, isAuthenticated, loading]);
     return (
         <AuthContext.Provider value={value}>
             {children}
