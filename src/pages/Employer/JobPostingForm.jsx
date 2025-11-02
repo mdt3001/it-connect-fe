@@ -183,7 +183,7 @@ function JobPostingForm() {
           category: formData.category,
           type: formData.jobType.toUpperCase().replace("-", "_"),
           description: formData.description.trim(),
-          requirements: formData.requirements.trim(),
+          requirement: formData.requirements.trim(),
           salaryMin: Number(formData.salaryMin) || 0,
           salaryMax: Number(formData.salaryMax) || 0,
         };
