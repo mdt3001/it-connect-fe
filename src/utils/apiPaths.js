@@ -18,7 +18,7 @@ export const API_PATHS = {
     GET_JOB_EMPLOYER: "api/jobs/get-jobs-employer?pageNo=0&pageSize=20",
     UPDATE_JOB: (id) => `/api/jobs/${id}`,
     DELETE_JOB: (id) => `/api/jobs/${id}`,
-    TOGGLE_CLOSE: (id) => `/api/jobs/toggle-close/${id}`,
+    TOGGLE_CLOSE: (id) => `/api/jobs/${id}/toogle-close`,
     SAVE_JOB: (id) => `/api/save-jobs/${id}`,
     UNSAVE_JOB: (id) => `/api/save-jobs/${id}`,
     GET_SAVED_JOBS: "/api/save-jobs/my",

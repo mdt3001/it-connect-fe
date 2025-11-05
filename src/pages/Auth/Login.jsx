@@ -241,7 +241,7 @@ function Login() {
             <p className="text-sm text-gray-600">
               Chưa có tài khoản?{" "}
               <a
-                href="/register"
+                href="/signup"
                 className="text-blue-600 hover:underline cursor-pointer"
               >
                 Đăng ký ngay
