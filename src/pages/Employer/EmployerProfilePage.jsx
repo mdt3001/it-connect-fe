@@ -3,10 +3,10 @@ import DashboardLayout from '../../components/layout/DashboardLayout'
 
 function EmployerProfilePage() {
   return (
-    <DashboardLayout activeMenu="employer-profile">
+    <DashboardLayout activeMenu="company-profile">
       <div>EmployerProfilePage</div>
     </DashboardLayout>
-  )
+  );
 }
 
 export default EmployerProfilePage

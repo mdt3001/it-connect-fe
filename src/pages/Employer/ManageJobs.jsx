@@ -292,7 +292,9 @@ function ManageJobs() {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <button
                               onClick={() =>
-                                navigate(`/employer/applications/${job.jobId}`)
+                                navigate("/applicants", {
+                                  state: { jobId: job.jobId },
+                                })
                               }
                               className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors"
                             >

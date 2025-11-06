@@ -28,3 +28,11 @@ export const validateAvatar = (file) => {
     return "Kích thước file không được vượt quá 5MB";
   return "";
 };
+
+export const getInitials = (name) => {
+  return name
+    .split(" ")
+    .map((part) => part.charAt(0).toUpperCase())
+    .join("")
+    .slice(0, 2);
+};

@@ -107,7 +107,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
   const sidebarWidth = isMobile ? 0 : 64; // Giả sử không collapse, width cố định 64 cho icon-only nếu cần
   const isCollapsed = false; // Placeholder, có thể dùng state sau
 
-  console.log(user)
+  console.log(user);
 
   return (
     <div className="flex h-screen bg-gray-50" role="main">
@@ -154,7 +154,9 @@ const DashboardLayout = ({ children, activeMenu }) => {
             <NavigationItem
               key={item.id}
               item={item}
-              isActive={currentNavId() === item.id}
+              isActive={
+                activeMenu ? activeMenu === item.id : currentNavId() === item.id
+              }
               onClick={handleNavigation}
               isCollapsed={isCollapsed}
             />
