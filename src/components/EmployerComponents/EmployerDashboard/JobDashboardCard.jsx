@@ -13,7 +13,7 @@ const JobDashboardCard = ({ job }) => {
         <div>
           <h4 className="font-medium text-gray-900">{job.title}</h4>
           <p className="text-xs text-gray-500">
-            {job.location} - {moment(job.createdAt).format("Do MM YYYY")}
+            {job.location} - {moment(job.createdAt).format("DD/MM/YYYY")}
           </p>
         </div>
       </div>

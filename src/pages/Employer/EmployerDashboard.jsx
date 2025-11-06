@@ -18,70 +18,6 @@ import Card from "../../components/EmployerComponents/EmployerDashboard/Card";
 import StatCard from "../../components/EmployerComponents/EmployerDashboard/StatCard";
 import JobDashboardCard from "../../components/EmployerComponents/EmployerDashboard/JobDashboardCard";
 import ApplicantDashboardCard from "../../components/EmployerComponents/EmployerDashboard/ApplicantDashboardCard";
-const fakeDashboardData = {
-  counts: {
-    activeJobs: 12,
-    totalApplications: 145,
-    totalHired: 8,
-    trends: {
-      activeJobs: 15,
-      totalApplications: 23,
-      totalHired: 10,
-    },
-  },
-  data: {
-    recentJobs: [
-      {
-        jobId: "1",
-        title: "Senior Frontend Developer",
-        location: "Hồ Chí Minh",
-        salary: "25-35 triệu",
-        applications: 24,
-        createdAt: "2025-10-15T10:30:00Z",
-        status: "active",
-      },
-      {
-        jobId: "2",
-        title: "Backend Developer (Node.js)",
-        location: "Hà Nội",
-        salary: "20-30 triệu",
-        applications: 18,
-        createdAt: "2025-10-18T14:20:00Z",
-        status: "active",
-      },
-      {
-        jobId: "3",
-        title: "UI/UX Designer",
-        location: "Remote",
-        salary: "15-25 triệu",
-        applications: 12,
-        createdAt: "2025-10-20T09:15:00Z",
-        status: "closed",
-      },
-    ],
-
-    recentApplicants: [
-      {
-        applicantId: "A1",
-        name: "Nguyễn Văn A",
-        position: "Senior Frontend Developer",
-        time: "2 hours ago",
-      },
-      {
-        applicantId: "A2",
-        name: "Trần Thị B",
-        position: "Backend Developer (Node.js)",
-        time: "5 hours ago",
-      },
-      {
-        applicantId: "A3",
-        name: "Lê Văn C",
-        position: "UI/UX Designer",
-        time: "1 day ago",
-      },
-    ],
-  },
-};
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
@@ -91,9 +27,10 @@ const EmployerDashboard = () => {
   const getDashboardOverview = async () => {
     try {
       setLoading(true);
-      const response = await axiosInstanddce.get(API_PATHS.DASHBOARD.OVERVIEW);
-      if (response.status === 200) {
-        setDashboardData(response.data);
+      const response = await axiosInstance.get(API_PATHS.DASHBOARD.OVERVIEW);
+      console.log("Dashboard overview response:", response);
+      if (response.data.code === 200) {
+        setDashboardData(response.data.result);
       }
     } catch (error) {
       console.error("Error fetching dashboard overview:", error);
@@ -117,10 +54,10 @@ const EmployerDashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <StatCard
               title="Vị trí đang tuyển dụng"
-              value={dashboardData?.counts?.activeJobs || 0}
+              value={dashboardData?.counts?.totalActiveJobs || 0}
               icon={Briefcase}
               trend={true}
-              trendValue={`${dashboardData?.counts?.trends?.activeJobs || 0}%`}
+              trendValue={`${dashboardData?.trends?.activeJobs || 0}%`}
               color="blue"
             />
 
@@ -129,9 +66,7 @@ const EmployerDashboard = () => {
               value={dashboardData?.counts?.totalApplications || 0}
               icon={Users}
               trend={true}
-              trendValue={`${
-                dashboardData?.counts?.trends?.totalApplications || 0
-              }%`}
+              trendValue={`${dashboardData?.trends?.applications || 0}%`}
               color="green"
             />
 
@@ -140,7 +75,7 @@ const EmployerDashboard = () => {
               value={dashboardData?.counts?.totalHired || 0}
               icon={CheckCircle2}
               trend={true}
-              trendValue={`${dashboardData?.counts?.trends?.totalHired || 0}%`}
+              trendValue={`${dashboardData?.trends?.hired || 0}%`}
               color="purple"
             />
           </div>
@@ -160,12 +95,12 @@ const EmployerDashboard = () => {
               }
             >
               <div className="space-y-3">
-                {fakeDashboardData?.data?.recentJobs
-                  ?.slice(0, 3)
+                {dashboardData?.data?.recentJobs
+                  ?.slice(0, 5)
                   .map((job, index) => (
                     <JobDashboardCard key={index} job={job} />
                   ))}
-                {fakeDashboardData?.data?.recentJobs?.length === 0 && (
+                {dashboardData?.data?.recentJobs?.length === 0 && (
                   <p className="text-gray-500">
                     Không có vị trí nào được đăng gần đây.
                   </p>
@@ -186,17 +121,17 @@ const EmployerDashboard = () => {
               }
             >
               <div className="space-y-3">
-                {fakeDashboardData?.data?.recentApplicants
-                  ?.slice(0, 3)
+                {dashboardData?.data?.recentApplications
+                  ?.slice(0, 5)
                   .map((data, index) => (
                     <ApplicantDashboardCard
                       key={index}
                       applicant={data}
-                      position={data?.position}
-                      time={data?.time}
+                      jobTitle={data?.jobTitle}
+                      createdAt={data?.createdAt}
                     />
                   ))}
-                {fakeDashboardData?.data?.recentApplicants?.length === 0 && (
+                {dashboardData?.data?.recentApplications?.length === 0 && (
                   <p className="text-gray-500">
                     Không có ứng viên nào đã nộp đơn gần đây.
                   </p>
