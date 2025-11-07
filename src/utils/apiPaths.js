@@ -5,7 +5,7 @@ export const API_PATHS = {
     REGISTER: "/api/auth/register",
     LOGIN: "/api/auth/login",
     GET_PROFILE: "/api/auth/profile",
-    UPDATE_PROFILE: "/api/user/profile",
+    UPDATE_PROFILE: (id) => `/api/user/${id}`,
     DELETE_RESUME: "/api/user/resume",
   },
   DASHBOARD: {
@@ -15,7 +15,7 @@ export const API_PATHS = {
     GET_ALL_JOBS: "/api/jobs",
     GET_JOB_BY_ID: (id) => `/api/jobs/${id}`,
     POST_JOB: "/api/jobs/",
-    GET_JOB_EMPLOYER: "api/jobs/get-jobs-employer?pageNo=0&pageSize=20",
+    GET_JOB_EMPLOYER: "api/jobs/get-jobs-employer",
     UPDATE_JOB: (id) => `/api/jobs/${id}`,
     DELETE_JOB: (id) => `/api/jobs/${id}`,
     TOGGLE_CLOSE: (id) => `/api/jobs/${id}/toogle-close`,

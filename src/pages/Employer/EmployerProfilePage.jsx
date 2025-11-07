@@ -102,7 +102,7 @@ function EmployerProfilePage() {
       };
 
       const response = await axiosInstance.put(
-        API_PATHS.AUTH.UPDATE_PROFILE,
+        API_PATHS.AUTH.UPDATE_PROFILE(user?.userId),
         payload
       );
       const updated = response.data?.result || payload;
@@ -209,12 +209,12 @@ function EmployerProfilePage() {
                   />
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-1">
-                      {profileData.name || "Not Updated"}
+                      {profileData.name || "Chưa cập nhật"}
                     </h3>
                     <div className="flex items-center gap-2 text-gray-600">
                       <Mail className="w-4 h-4" />
                       <span className="text-sm">
-                        {profileData.email || "No email"}
+                        {profileData.email || "Chưa có email"}
                       </span>
                     </div>
                   </div>
@@ -236,7 +236,7 @@ function EmployerProfilePage() {
                       <img
                         src={profileData.companyLogo}
                         alt="Company Logo"
-                        className="max-w-full max-h-full object-contain p-2"
+                        className="max-w-full max-h-full object-contain"
                       />
                     ) : (
                       <Building2 className="w-10 h-10 text-white" />
@@ -244,7 +244,7 @@ function EmployerProfilePage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-1">
-                      {profileData.companyName || "Not Updated"}
+                      {profileData.companyName || "Chưa cập nhật"}
                     </h3>
                     <div className="flex items-center gap-2 text-gray-600">
                       <Building2 className="w-4 h-4" />
@@ -265,8 +265,7 @@ function EmployerProfilePage() {
             </div>
             <div className="px-6 py-8">
               <p className="text-gray-700 leading-relaxed">
-                {profileData.companyDescription ||
-                  "The company has not updated the introduction section yet."}
+                {profileData.companyDescription || "Chưa có mô tả về công ty."}
               </p>
             </div>
           </div>

@@ -54,7 +54,7 @@ const AppllicantProfilePreview = ({
         prev ? { ...prev, status: newStatus } : prev
       );
       // thông báo thành công
-      toast.success(message || "Application status updated successfully");
+      toast.success(message || "Cập nhật trạng thái thành công");
       // báo cho parent cập nhật danh sách (nếu có truyền vào)
       if (typeof handleStatusUpdated === "function") {
         handleStatusUpdated(selectedApplication.applicationId, newStatus);
