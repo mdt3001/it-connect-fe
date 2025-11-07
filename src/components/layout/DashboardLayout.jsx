@@ -212,9 +212,9 @@ const DashboardLayout = ({ children, activeMenu }) => {
 
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  Welcome back{user?.name ? `, ${user.name}` : ""}!
+                  Chào mừng quay trở lại{user?.name ? `, ${user.name}` : ""}!
                 </h1>
-                <p className="text-gray-600">Here's your dashboard overview.</p>
+                <p className="text-gray-600">Đây là bảng điều khiển của bạn.</p>
               </div>
             </div>
 

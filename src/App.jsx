@@ -19,6 +19,7 @@ import SavedJobs from "./pages/JobSeeker/SavedJobs";
 import UserProfile from "./pages/JobSeeker/UserProfile";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import CompanyProfilePage from "./pages/Employer/EmployerProfilePage";
+import EditProfileDetails from "./pages/Employer/EditProfileDetails";
 import { AuthProvider } from "./context/AuthContext"; // Import AuthProvider
 
 function App() {
@@ -52,6 +53,10 @@ function App() {
               />
               <Route path="/applicants" element={<ApplicationViewer />} />
               <Route path="/company-profile" element={<CompanyProfilePage />} />
+              <Route
+                path="/edit-company-profile"
+                element={<EditProfileDetails />}
+              />
             </Route>
 
             {/* catch all */}
