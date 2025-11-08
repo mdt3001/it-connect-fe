@@ -9,6 +9,7 @@ const ProfileDropdown = ({
   avatar,
   companyName,
   email,
+  role,
   onLogout,
 }) => {
   return (
@@ -36,7 +37,7 @@ const ProfileDropdown = ({
           <p className="text-xs text-gray-500">{email || "user@example.com"}</p>
         </div>
         <ChevronDown
-          className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+          className={`hidden md:block w-4 h-4 text-gray-500 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -46,7 +47,7 @@ const ProfileDropdown = ({
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
           <Link
-            to="/company-profile"
+            to={role === "employer" ? "/company-profile" : "/profile"}
             className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
             onClick={() => onToggle()}
           >
@@ -54,7 +55,7 @@ const ProfileDropdown = ({
             Hồ sơ cá nhân
           </Link>
           <Link
-            to="/company-profile"
+            to={role === "employer" ? "/employer-settings" : "/settings"}
             className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
             onClick={() => onToggle()}
           >

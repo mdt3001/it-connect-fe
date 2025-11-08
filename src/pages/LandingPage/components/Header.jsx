@@ -95,7 +95,8 @@ function Header() {
                     onToggle={toggleProfileDropdown}
                     avatar={user?.avatar}
                     companyName={user?.name}
-                    email={user?.email}
+                      email={user?.email}
+                      role={user?.role}
                     onLogout={handleLogout}
                   />
                 )}

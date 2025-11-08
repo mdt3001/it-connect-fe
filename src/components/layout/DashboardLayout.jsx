@@ -225,6 +225,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
               companyName={user?.name}
               email={user?.email}
               onLogout={handleLogout}
+              role={user?.role}
             />
           </div>
         </header>

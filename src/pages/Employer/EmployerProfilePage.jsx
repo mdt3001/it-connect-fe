@@ -231,12 +231,12 @@ function EmployerProfilePage() {
               </div>
               <div className="px-6 py-8">
                 <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                  <div className="w-21 h-21 rounded-2xl border border-gray-200 flex items-center justify-center">
                     {profileData.companyLogo ? (
                       <img
                         src={profileData.companyLogo}
                         alt="Company Logo"
-                        className="max-w-full max-h-full object-contain"
+                        className="max-w-full max-h-full object-contain p-1 rounded-2xl"
                       />
                     ) : (
                       <Building2 className="w-10 h-10 text-white" />
