@@ -51,7 +51,6 @@ export const useJobFilters = (user) => {
         params.append("minSalary", filterParams.minSalary);
       if (filterParams.maxSalary)
         params.append("maxSalary", filterParams.maxSalary);
-      if (user) params.append("userId", user?.userId);
 
       const response = await axiosInstance.get(
         `${API_PATHS.JOB.GET_ALL_JOBS}?${params.toString()}`

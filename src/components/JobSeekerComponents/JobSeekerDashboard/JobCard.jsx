@@ -7,6 +7,7 @@ import {
   ExternalLink,
   Building2,
 } from "lucide-react";
+import JobStatusBadge from "../../EmployerComponents/Application/StatusBadge";
 
 const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
   return (
@@ -22,7 +23,7 @@ const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
               <Building2 className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-md font-semibold text-gray-900line-clamp-2 group-hover:text-blue-600 transition-colors">
+              <h1 className="text-md font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
                 {job.title}
               </h1>
 
@@ -49,8 +50,6 @@ const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
           </button>
         </div>
 
-        {/* Job info */}
-
         {/* Tags */}
         <div className="space-y-2 mb-4">
           <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -74,7 +73,8 @@ const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
             {job.applicationCount} ứng tuyển
           </p>
 
-          {!job.hasApplied && !job.closed && (
+          {/* Use JobStatusBadge for consistent styling */}
+          {!job.hasApplied && !job.closed ? (
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -85,18 +85,8 @@ const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
               Ứng tuyển
               <ExternalLink className="w-4 h-4" />
             </button>
-          )}
-
-          {job.hasApplied && (
-            <span className="px-4 py-2 bg-green-50 text-green-700 rounded-lg text-sm font-medium">
-              Đã ứng tuyển
-            </span>
-          )}
-
-          {job.closed && (
-            <span className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium">
-              Đã đóng
-            </span>
+          ) : (
+            <JobStatusBadge hasApplied={job.hasApplied} closed={job.closed} />
           )}
         </div>
       </div>

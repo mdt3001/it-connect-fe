@@ -165,7 +165,7 @@ const JobSeekerDashboard = () => {
               <JobsGrid
                 jobs={formattedJobs}
                 loading={loading}
-                onJobClick={(jobId) => navigate(`/jobs/${jobId}`)}
+                onJobClick={(jobId) => navigate(`/job/${jobId}`)}
                 onToggleSave={toggleSaveJob}
                 onApply={applyToJob}
                 onClearFilters={clearAllFilters}
