@@ -1,49 +1,56 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-  Mail,
   Lock,
   Eye,
   EyeOff,
-  Loader,
+  ArrowLeft,
   AlertCircle,
+  Loader,
   CheckCircle,
 } from "lucide-react";
-import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
-function Login() {
-  const { login } = useAuth();
+function ResetPassword() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email || "";
+
   const [formData, setFormData] = React.useState({
-    email: "",
-    password: "",
-    rememberMe: false,
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const [formState, setFormState] = React.useState({
     loading: false,
     error: {},
     showPassword: false,
+    showConfirmPassword: false,
     success: false,
   });
 
   const validatePassword = (password) => {
     if (!password.trim()) return "Mật khẩu không được để trống";
     if (password.length < 6) return "Mật khẩu phải có ít nhất 6 ký tự";
+    if (!/[A-Z]/.test(password)) return "Mật khẩu phải chứa ít nhất 1 chữ hoa";
+    if (!/[a-z]/.test(password))
+      return "Mật khẩu phải chứa ít nhất 1 chữ thường";
+    if (!/[0-9]/.test(password)) return "Mật khẩu phải chứa ít nhất 1 chữ số";
     return "";
   };
 
   const validateForm = () => {
     const errors = {
-      email: validateEmail(formData.email),
-      password: validatePassword(formData.password),
+      newPassword: validatePassword(formData.newPassword),
+      confirmPassword: !formData.confirmPassword
+        ? "Vui lòng xác nhận mật khẩu"
+        : formData.newPassword !== formData.confirmPassword
+        ? "Mật khẩu không khớp"
+        : "",
     };
 
-    // remove empty errors
     Object.keys(errors).forEach((key) => {
       if (!errors[key]) delete errors[key];
     });
@@ -64,51 +71,36 @@ function Login() {
     }
   };
 
-  // Handle remember me checkbox
-  const handleRememberMeChange = (e) => {
-    setFormData((prev) => ({ ...prev, rememberMe: e.target.checked }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+
     setFormState((prev) => ({ ...prev, loading: true, error: {} }));
     try {
-      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
-        email: formData.email,
-        password: formData.password,
-        rememberMe: formData.rememberMe,
+      const response = await axiosInstance.post(API_PATHS.AUTH.RESET_PASSWORD, {
+        email,
+        newPassword: formData.newPassword,
       });
 
-      console.log("Login response:", response.data);
+      if (response.data.code === 200) {
+        setFormState((prev) => ({
+          ...prev,
+          loading: false,
+          success: true,
+        }));
 
-      setFormState((prev) => ({
-        ...prev,
-        loading: false,
-        success: true,
-        error: {},
-      }));
-
-      const { result } = response.data;
-      const { token, ...userData } = result;
-
-      if (token) {
-        login(userData, token);
-
-        // Redirect based on user role
-        const redirectPath =
-          userData.role === "employer" ? "/employer-dashboard" : "/find-jobs";
         setTimeout(() => {
-          navigate(redirectPath);
-        }, 1500);
+          navigate("/login");
+        }, 3000);
       }
     } catch (error) {
-      console.error("Login error:", error);
       setFormState((prev) => ({
         ...prev,
         loading: false,
         error: {
-          submit: error.response?.data?.message || "Đăng nhập thất bại",
+          submit:
+            error.response?.data?.message ||
+            "Đặt lại mật khẩu thất bại. Vui lòng thử lại.",
         },
       }));
     }
@@ -124,11 +116,14 @@ function Login() {
           className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Thành công!</h2>
-          <p className="text-gray-600">Bạn đã đăng nhập thành công.</p>
-          <div className="animate-spin w-6 h-6 border-2 border-t-transparent border-blue-600 rounded-full mx-auto mt-4"></div>
-          <p className="text-gray-500 text-sm mt-2">
-            Đang chuyển hướng đến trang dashboard...
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Đặt lại mật khẩu thành công
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Mật khẩu của bạn đã được cập nhật. Vui lòng đăng nhập lại.
+          </p>
+          <p className="text-gray-500 text-sm">
+            Chuyển hướng về trang đăng nhập trong 3 giây...
           </p>
         </motion.div>
       </div>
@@ -143,57 +138,40 @@ function Login() {
         transition={{ duration: 0.5 }}
         className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md"
       >
-        <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Đăng nhập</h2>
-          <p className="text-gray-600">Chào mừng bạn quay trở lại</p>
+        <Link
+          to="/forgot-password"
+          className="flex items-center text-blue-600 hover:text-blue-700 mb-6"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Quay lại
+        </Link>
+
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Đặt lại mật khẩu
+          </h2>
+          <p className="text-gray-600">Nhập mật khẩu mới của bạn</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email Field */}
+          {/* New Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Địa chỉ email
-            </label>
-            <div className="relative">
-              <Mail className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className={`pl-10 pr-4 py-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  formState.error.email ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Nhập địa chỉ email"
-              />
-            </div>
-
-            {formState.error.email && (
-              <p className="text-sm text-red-600 mt-2">
-                <AlertCircle className="w-4 h-4 inline-block mr-1" />
-                {formState.error.email}
-              </p>
-            )}
-          </div>
-
-          {/* Password Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Mật khẩu
+              Mật khẩu mới *
             </label>
             <div className="relative">
               <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type={formState.showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
+                name="newPassword"
+                value={formData.newPassword}
                 onChange={handleInputChange}
-                className={`pl-10 pr-4 py-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  formState.error.password
+                className={`pl-10 pr-10 py-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  formState.error.newPassword
                     ? "border-red-500"
                     : "border-gray-300"
                 }`}
-                placeholder="Nhập mật khẩu"
+                placeholder="Nhập mật khẩu mới"
               />
               <button
                 type="button"
@@ -212,39 +190,62 @@ function Login() {
                 )}
               </button>
             </div>
-
-            {formState.error.password && (
+            {formState.error.newPassword && (
               <p className="text-sm text-red-600 mt-2">
                 <AlertCircle className="w-4 h-4 inline-block mr-1" />
-                {formState.error.password}
+                {formState.error.newPassword}
               </p>
             )}
-
-            {/* Remember Me & Forgot Password - NEW */}
-            <div className="flex items-center justify-between mt-3">
-              {/* Remember Me Checkbox */}
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="rememberMe"
-                  checked={formData.rememberMe}
-                  onChange={handleRememberMeChange}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 cursor-pointer"
-                />
-                <span className="text-sm text-gray-700">Ghi nhớ đăng nhập</span>
-              </label>
-
-              {/* Forgot Password Link */}
-              <Link
-                to="/forgot-password"
-                className="text-sm text-blue-600 hover:text-blue-700 hover:underline font-medium"
-              >
-                Quên mật khẩu?
-              </Link>
-            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Ít nhất 8 ký tự, chứa chữ hoa, chữ thường, chữ số, và ký tự đặc
+              biệt
+            </p>
           </div>
 
-          {/* Submit Error */}
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Xác nhận mật khẩu *
+            </label>
+            <div className="relative">
+              <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type={formState.showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                className={`pl-10 pr-10 py-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  formState.error.confirmPassword
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                placeholder="Xác nhận mật khẩu"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+                onClick={() =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    showConfirmPassword: !prev.showConfirmPassword,
+                  }))
+                }
+              >
+                {formState.showConfirmPassword ? (
+                  <EyeOff className="w-5 h-5 text-gray-400" />
+                ) : (
+                  <Eye className="w-5 h-5 text-gray-400" />
+                )}
+              </button>
+            </div>
+            {formState.error.confirmPassword && (
+              <p className="text-sm text-red-600 mt-2">
+                <AlertCircle className="w-4 h-4 inline-block mr-1" />
+                {formState.error.confirmPassword}
+              </p>
+            )}
+          </div>
+
           {formState.error.submit && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <p className="text-sm text-red-600">
@@ -254,35 +255,24 @@ function Login() {
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={formState.loading}
             className="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors font-medium flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {formState.loading ? (
-              <Loader className="w-5 h-5 animate-spin" />
+              <>
+                <Loader className="w-5 h-5 animate-spin mr-2" />
+                Đang cập nhật...
+              </>
             ) : (
-              "Đăng nhập"
+              "Đặt lại mật khẩu"
             )}
           </button>
-
-          {/* Sign Up Link */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
-              Chưa có tài khoản?{" "}
-              <Link
-                to="/signup"
-                className="text-blue-600 hover:text-blue-700 hover:underline cursor-pointer font-medium"
-              >
-                Đăng ký ngay
-              </Link>
-            </p>
-          </div>
         </form>
       </motion.div>
     </div>
   );
 }
 
-export default Login;
+export default ResetPassword;

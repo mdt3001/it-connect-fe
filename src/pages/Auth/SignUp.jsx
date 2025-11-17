@@ -23,15 +23,16 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
 import uploadImage from "../../utils/uploadImage";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const { login } = useAuth();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     password: "",
+    confirmPassword: "", // Add confirmPassword
     role: "",
     avatar: null,
   });
@@ -41,10 +42,11 @@ const SignUp = () => {
     error: null,
     success: null,
     showPassword: false,
+    showConfirmPassword: false, // Add showConfirmPassword
     avatarPreview: null,
   });
 
-  //handle input change
+  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -80,7 +82,7 @@ const SignUp = () => {
       }
     }
     setFormData((prev) => ({ ...prev, avatar: file }));
-    //create preview
+    // Create preview
     const reader = new FileReader();
     reader.onload = (e) => {
       setFormState((prev) => ({
@@ -97,11 +99,16 @@ const SignUp = () => {
       fullName: formData.fullName ? "" : "Họ và tên không được để trống",
       email: validateEmail(formData.email),
       password: validatePassword(formData.password),
+      confirmPassword: !formData.confirmPassword
+        ? "Vui lòng nhập lại mật khẩu"
+        : formData.password !== formData.confirmPassword
+        ? "Mật khẩu không khớp"
+        : "",
       role: formData.role ? "" : "Vui lòng chọn vai trò",
       avatar: "",
     };
 
-    // remove empty errors
+    // Remove empty errors
     Object.keys(errors).forEach((key) => {
       if (!errors[key]) delete errors[key];
     });
@@ -139,17 +146,17 @@ const SignUp = () => {
         error: {},
       }));
 
-      const { result } = response.data; // Access the result object
-      const { token, ...userData } = result; // Extract token and user data
+      const { result } = response.data;
+      const { token, ...userData } = result;
 
       if (token) {
-        login(userData, token); // Pass userData and token to login function
+        login(userData, token);
 
         // Redirect based on user role
         const redirectPath =
           userData.role === "employer" ? "/employer-dashboard" : "/find-jobs";
         setTimeout(() => {
-          navigate(redirectPath); // Use navigate for redirection
+          navigate(redirectPath);
         }, 1500);
       }
     } catch (error) {
@@ -195,7 +202,7 @@ const SignUp = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md"
+        className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg"
       >
         <div className="mb-8 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Đăng Ký</h2>
@@ -232,6 +239,7 @@ const SignUp = () => {
               </p>
             )}
           </div>
+
           <div className="flex flex-col">
             <label htmlFor="email" className="mb-1 font-medium text-gray-700">
               Địa chỉ email *
@@ -257,6 +265,7 @@ const SignUp = () => {
               </p>
             )}
           </div>
+
           <div className="flex flex-col">
             <label
               htmlFor="password"
@@ -303,6 +312,55 @@ const SignUp = () => {
               </p>
             )}
           </div>
+
+          {/* Confirm Password Field - NEW */}
+          <div className="flex flex-col">
+            <label
+              htmlFor="confirmPassword"
+              className="mb-1 font-medium text-gray-700"
+            >
+              Nhập lại mật khẩu *
+            </label>
+            <div className="relative">
+              <input
+                type={formState.showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  formState.error?.confirmPassword
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                placeholder="Nhập lại mật khẩu"
+              />
+              <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                onClick={() =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    showConfirmPassword: !prev.showConfirmPassword,
+                  }))
+                }
+              >
+                {formState.showConfirmPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+            {formState.error?.confirmPassword && (
+              <p className="text-sm text-red-600 mt-1">
+                <AlertCircle className="w-4 h-4 inline-block mr-1" />
+                {formState.error.confirmPassword}
+              </p>
+            )}
+          </div>
+
           <div className="flex flex-col">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Ảnh đại diện ( Không bắt buộc )
@@ -325,7 +383,7 @@ const SignUp = () => {
                   accept=".jpg,.jpeg,.png"
                   onChange={handleAvatarChange}
                   className="hidden"
-                  id="avatar" // Add the id attribute
+                  id="avatar"
                 />
 
                 <label
@@ -339,7 +397,7 @@ const SignUp = () => {
                   .jpg, .jpeg, .png (Dưới 5MB)
                 </p>
               </div>
-            </div>{" "}
+            </div>
             {formState.error?.avatar && (
               <p className="text-sm text-red-600 mt-1 flex items-center">
                 <AlertCircle className="w-4 h-4 mr-1" />
@@ -397,6 +455,7 @@ const SignUp = () => {
               </p>
             </div>
           )}
+
           <button
             type="submit"
             disabled={formState.loading}

@@ -13,6 +13,9 @@ import EmployerDashboard from "./pages/Employer/EmployerDashboard";
 import LandingPage from "./pages/LandingPage/LangdingPage";
 import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import VerifyResetCode from "./pages/Auth/VerifyResetCode";
+import ResetPassword from "./pages/Auth/ResetPassword";
 import JobSeekerDashboard from "./pages/JobSeeker/JobSeekerDashboard";
 import JobDetails from "./pages/JobSeeker/JobDetails";
 import SavedJobs from "./pages/JobSeeker/SavedJobs";
@@ -36,6 +39,9 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify-reset-code" element={<VerifyResetCode />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             <Route path="/find-jobs" element={<JobSeekerDashboard />} />
             <Route path="/job/:jobId" element={<JobDetails />} />

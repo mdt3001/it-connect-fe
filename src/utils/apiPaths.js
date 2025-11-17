@@ -1,4 +1,3 @@
-
 export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register",
@@ -6,6 +5,12 @@ export const API_PATHS = {
     GET_PROFILE: "/api/auth/profile",
     UPDATE_PROFILE: (id) => `/api/user/${id}`,
     DELETE_RESUME: "/api/user/resume",
+
+    // Forgot password
+    FORGOT_PASSWORD: "/api/auth/password-reset/send-code",
+    VERIFY_CODE: "/api/auth/password-reset/verify-code",
+    RESET_PASSWORD: "/api/auth/password-reset/reset",
+    RESEND_CODE: "/api/auth/password-reset/resend-code",
   },
   DASHBOARD: {
     OVERVIEW: "/api/analytics/overview",
