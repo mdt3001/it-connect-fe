@@ -7,7 +7,7 @@ import {
   ExternalLink,
   Building2,
 } from "lucide-react";
-import JobStatusBadge from "../../EmployerComponents/Application/StatusBadge";
+import StatusBadge from "../../EmployerComponents/Application/StatusBadge";
 
 const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
   return (
@@ -35,17 +35,17 @@ const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onToggleSave(job.id, job.isSaved);
+              onToggleSave(job.id, job.saved);
             }}
             className={`p-2 rounded-lg transition-colors ${
-              job.isSaved
+              job.saved
                 ? "bg-blue-50 text-blue-600"
                 : "bg-gray-50 text-gray-400 hover:bg-gray-100"
             }`}
           >
             <Bookmark
               className="w-5 h-5"
-              fill={job.isSaved ? "currentColor" : "none"}
+              fill={job.saved ? "currentColor" : "none"}
             />
           </button>
         </div>
@@ -70,11 +70,11 @@ const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
         {/* Footer */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
           <p className="text-xs text-gray-500">
-            {job.applicationCount} ứng tuyển
+            {job.applicationCount} người đã ứng tuyển
           </p>
 
           {/* Use JobStatusBadge for consistent styling */}
-          {!job.hasApplied && !job.closed ? (
+          {!job.applied && !job.closed ? (
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -86,7 +86,7 @@ const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
               <ExternalLink className="w-4 h-4" />
             </button>
           ) : (
-            <JobStatusBadge hasApplied={job.hasApplied} closed={job.closed} />
+            <StatusBadge status={job.closed ? "CLOSED" : job.status} />
           )}
         </div>
       </div>

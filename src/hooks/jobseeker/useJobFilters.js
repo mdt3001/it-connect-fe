@@ -53,7 +53,9 @@ export const useJobFilters = (user) => {
         params.append("maxSalary", filterParams.maxSalary);
 
       const response = await axiosInstance.get(
-        `${API_PATHS.JOB.GET_ALL_JOBS}?${params.toString()}`
+        user
+          ? `${API_PATHS.JOB.GET_ALL_JOBS}?${params.toString()}`
+          : `${API_PATHS.JOB.GET_ALL_JOBS_PUBLIC}?${params.toString()}`
       );
 
       if (response.data.code === 200) {

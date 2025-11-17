@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { MapPin, Building2, Clock, Users, DollarSign, ExternalLink } from "lucide-react";
+import {
+  MapPin,
+  Building2,
+  Clock,
+  Users,
+  DollarSign,
+  ExternalLink,
+} from "lucide-react";
 import moment from "moment";
 import { useAuth } from "../../context/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
@@ -8,16 +15,27 @@ import { API_PATHS } from "../../utils/apiPaths";
 import Navbar from "../../components/layout/Navbar";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import toast from "react-hot-toast";
+import StatusBadge from "../../components/EmployerComponents/Application/StatusBadge";
 
 function JobDetails() {
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { jobId } = useParams();
   const navigate = useNavigate();
 
   const [jobDetails, setJobDetails] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isSaved, setIsSaved] = useState(false);
   const [applying, setApplying] = useState(false);
+
+  const formatJobType = (type) => {
+    const typeMap = {
+      FULL_TIME: "Full-Time",
+      PART_TIME: "Part-Time",
+      CONTRACT: "Contract",
+      INTERNSHIP: "Internship",
+      REMOTE: "Remote",
+    };
+    return typeMap[type] || type;
+  };
 
   const getJobDetailsById = async () => {
     try {
@@ -30,7 +48,6 @@ function JobDetails() {
       );
       console.log("Job Details:", response.data);
       setJobDetails(response.data.result || response.data);
-      setIsSaved(response.data.result?.isSaved || false);
     } catch (error) {
       console.error("Error fetching job details:", error);
       toast.error("Không thể lấy chi tiết công việc");
@@ -53,35 +70,26 @@ function JobDetails() {
     }
   };
 
-  const toggleSaveJob = async () => {
-    try {
-      if (isSaved) {
-        await axiosInstance.delete(API_PATHS.JOB.UNSAVE_JOB(jobId));
-        toast.success("Đã xóa khỏi việc làm đã lưu");
-      } else {
-        await axiosInstance.post(API_PATHS.JOB.SAVE_JOB(jobId));
-        toast.success("Đã thêm vào việc làm đã lưu");
-      }
-      setIsSaved(!isSaved);
-    } catch (error) {
-      console.error("Error toggling saved job:", error);
-      toast.error("Đã xảy ra lỗi");
-    }
-  };
-
   useEffect(() => {
-    if (jobId && user) {
+    if (!isAuthenticated) {
+      toast.error("Vui lòng đăng nhập để xem chi tiết công việc");
+      // Redirect to login after 2 seconds
+      const timer = setTimeout(() => {
+        navigate("/login", { state: { from: `/job/${jobId}` } });
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+
+    if (jobId) {
       getJobDetailsById();
     }
-  }, [jobId, user]);
+  }, [jobId, user, navigate]);
 
   if (loading) {
     return (
       <div className="bg-white min-h-screen">
         <Navbar />
-        <div className="flex items-center justify-center h-screen">
-          <LoadingSpinner />
-        </div>
+        <LoadingSpinner />
       </div>
     );
   }
@@ -117,16 +125,6 @@ function JobDetails() {
     return moment(date).format("DD MMM YYYY");
   };
 
-  const getApplicationStatus = () => {
-    if (jobDetails.applicationStatus === "APPLIED") {
-      return "Applied";
-    }
-    if (jobDetails.isClosed) {
-      return "Closed";
-    }
-    return null;
-  };
-
   return (
     <div>
       <Navbar />
@@ -134,7 +132,7 @@ function JobDetails() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white border border-gray-200 rounded-2xl shadow">
           <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
             <div className="flex-1 flex items-center gap-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center flex-shrink-0">
                 <Building2 className="w-10 h-10 text-white" />
               </div>
               <div className="flex-1">
@@ -146,8 +144,14 @@ function JobDetails() {
                 </div>
               </div>
             </div>
-            {jobDetails.applicationStatus !== "APPLIED" &&
-            !jobDetails.isClosed ? (
+            {jobDetails.closed ? (
+              // Nếu công việc đã đóng
+              <StatusBadge status="CLOSED" />
+            ) : jobDetails.status ? (
+              // Nếu có status (APPLIED, IN_REVIEW, ACCEPTED, REJECTED)
+              <StatusBadge status={jobDetails.status} />
+            ) : (
+              // Nếu chưa ứng tuyển
               <button
                 onClick={applyToJob}
                 disabled={applying}
@@ -156,13 +160,6 @@ function JobDetails() {
                 {applying ? "Đang nộp..." : "Ứng tuyển"}
                 <ExternalLink className="w-4 h-4" />
               </button>
-            ) : (
-              <button
-                disabled
-                className="cursor-not-allowed flex px-4 py-2 bg-gray-200 text-gray-600 rounded-lg font-semibold"
-              >
-                {jobDetails.isClosed ? "Đã đóng" : "Đã ứng tuyển"}
-              </button>
             )}
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
@@ -170,7 +167,7 @@ function JobDetails() {
               {jobDetails.category || "Software Development"}
             </span>
             <span className="inline-flex items-center px-4 py-2 rounded-full bg-pink-50 text-purple-700 text-sm font-semibold">
-              {jobDetails.type || "Full-Time"}
+              {formatJobType(jobDetails.type) || "Full-Time"}
             </span>
             <span className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-gray-50 text-gray-700 text-sm font-semibold">
               <Clock className="w-4 h-4" />

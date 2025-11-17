@@ -14,6 +14,7 @@ const StatusBadge = ({ status }) => {
       label: "Đang xem xét",
       className: "bg-yellow-100 text-yellow-700",
     },
+    CLOSED: { label: "Đã đóng", className: "bg-gray-100 text-gray-700" },
   };
   const config = statusConfig[status] || statusConfig.APPLIED;
   return (

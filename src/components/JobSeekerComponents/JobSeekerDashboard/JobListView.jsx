@@ -7,6 +7,7 @@ import {
   ExternalLink,
   Building2,
 } from "lucide-react";
+import StatusBadge from "../../EmployerComponents/Application/StatusBadge";
 
 const JobListView = ({ job, onClick, onToggleSave, onApply }) => {
   return (
@@ -47,7 +48,6 @@ const JobListView = ({ job, onClick, onToggleSave, onApply }) => {
               </div>
             </div>
 
-            
             {/* Application count */}
             <p className="text-xs text-gray-500">
               {job.applicationCount} người đã ứng tuyển
@@ -62,18 +62,18 @@ const JobListView = ({ job, onClick, onToggleSave, onApply }) => {
                 onToggleSave(job.id, job.isSaved);
               }}
               className={`p-2 rounded-lg transition-colors ${
-                job.isSaved
+                job.saved
                   ? "bg-blue-50 text-blue-600"
                   : "bg-gray-50 text-gray-400 hover:bg-gray-100"
               }`}
             >
               <Bookmark
                 className="w-5 h-5"
-                fill={job.isSaved ? "currentColor" : "none"}
+                fill={job.saved ? "currentColor" : "none"}
               />
             </button>
 
-            {!job.hasApplied && !job.closed && (
+            {!job.applied && !job.closed ? (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -84,18 +84,8 @@ const JobListView = ({ job, onClick, onToggleSave, onApply }) => {
                 Ứng tuyển
                 <ExternalLink className="w-4 h-4" />
               </button>
-            )}
-
-            {job.hasApplied && (
-              <span className="px-4 py-2 bg-green-50 text-green-700 rounded-lg text-sm font-medium">
-                Đã ứng tuyển
-              </span>
-            )}
-
-            {job.closed && (
-              <span className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium">
-                Đã đóng
-              </span>
+            ) : (
+              <StatusBadge status={job.closed ? "CLOSED" : job.status} />
             )}
           </div>
         </div>

@@ -15,6 +15,7 @@ import PaginationControls from "../../components/JobSeekerComponents/JobSeekerDa
 import MobileFilterOverlay from "../../components/JobSeekerComponents/JobSeekerDashboard/MobileFilterOverlay";
 
 import { useJobFilters } from "../../hooks/jobseeker/useJobFilters";
+import { s } from "framer-motion/client";
 
 const JobSeekerDashboard = () => {
   const { user } = useAuth();
@@ -51,6 +52,10 @@ const JobSeekerDashboard = () => {
 
   const toggleSaveJob = async (jobId, isSaved) => {
     try {
+      if (!user) {
+        toast.error("Vui lòng đăng nhập để sử dụng tính năng này");
+        return;
+      }
       if (isSaved) {
         await axiosInstance.delete(API_PATHS.JOB.UNSAVE_JOB(jobId));
         toast.success("Đã xóa khỏi việc làm đã lưu");
@@ -108,18 +113,17 @@ const JobSeekerDashboard = () => {
     description: job.description,
     requirement: job.requirement,
     applicationCount: job.applicationCount,
-    isSaved: job.saved || false,
-    hasApplied: job.applied || false,
+    saved: job.saved || false,
+    applied: job.applied || false,
     closed: job.closed,
+    status: job.status,
   }));
 
   if (loading && jobs.length === 0) {
     return (
       <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen">
         <Navbar />
-        <div className="flex items-center justify-center h-screen">
-          <LoadingSpinner />
-        </div>
+        <LoadingSpinner />
       </div>
     );
   }

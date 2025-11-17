@@ -16,6 +16,7 @@ export const API_PATHS = {
     OVERVIEW: "/api/analytics/overview",
   },
   JOB: {
+    GET_ALL_JOBS_PUBLIC: "/api/jobs",
     GET_ALL_JOBS: "/api/jobs/getJobStatus",
     GET_JOB_BY_ID: (id) => `/api/jobs/${id}`,
     POST_JOB: "/api/jobs/",

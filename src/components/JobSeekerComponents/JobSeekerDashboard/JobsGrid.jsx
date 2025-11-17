@@ -9,15 +9,11 @@ const JobsGrid = ({
   onJobClick,
   onToggleSave,
   onApply,
-    onClearFilters,
-    viewMode,
+  onClearFilters,
+  viewMode,
 }) => {
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (jobs.length === 0) {
@@ -42,7 +38,7 @@ const JobsGrid = ({
             key={job.id}
             job={job}
             onClick={() => onJobClick(job.id)}
-            onToggleSave={() => onToggleSave(job.id, job.isSaved)}
+            onToggleSave={() => onToggleSave(job.id, job.saved)}
             onApply={() => onApply(job.id)}
           />
         ))}
@@ -58,7 +54,7 @@ const JobsGrid = ({
           key={job.id}
           job={job}
           onClick={() => onJobClick(job.id)}
-          onToggleSave={() => onToggleSave(job.id, job.isSaved)}
+          onToggleSave={() => onToggleSave(job.id, job.saved)}
           onApply={() => onApply(job.id)}
         />
       ))}
