@@ -19,8 +19,8 @@ export const useJobFilters = (user) => {
     location: "",
     category: "",
     type: "",
-    minSalary: "",
-    maxSalary: "",
+    salaryMin: "",
+    salaryMax: "",
   });
 
   const [appliedFilters, setAppliedFilters] = useState({
@@ -28,8 +28,8 @@ export const useJobFilters = (user) => {
     location: "",
     category: "",
     type: "",
-    minSalary: "",
-    maxSalary: "",
+    salaryMin: "",
+    salaryMax: "",
   });
 
   const fetchJobs = async (filterParams = {}, page = 0) => {
@@ -47,10 +47,10 @@ export const useJobFilters = (user) => {
       if (filterParams.category)
         params.append("category", filterParams.category);
       if (filterParams.type) params.append("type", filterParams.type);
-      if (filterParams.minSalary)
-        params.append("minSalary", filterParams.minSalary);
-      if (filterParams.maxSalary)
-        params.append("maxSalary", filterParams.maxSalary);
+      if (filterParams.salaryMin)
+        params.append("salaryMin", filterParams.salaryMin);
+      if (filterParams.salaryMax)
+        params.append("salaryMax", filterParams.salaryMax);
 
       const response = await axiosInstance.get(
         user
@@ -103,8 +103,8 @@ export const useJobFilters = (user) => {
       location: "",
       category: "",
       type: "",
-      minSalary: "",
-      maxSalary: "",
+      salaryMin: "",
+      salaryMax: "",
     };
     setTempFilters(emptyFilters);
     setAppliedFilters(emptyFilters);

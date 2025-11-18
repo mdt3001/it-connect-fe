@@ -159,10 +159,10 @@ function EmployerProfilePage() {
 
   return (
     <DashboardLayout activeMenu="company-profile">
-      <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 py-8">
+      <div className="min-h-screen  bg-gray-50 px-4 sm:px-6 lg:px-8 py-8 max-w-6xl mx-auto">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg px-6 py-8 rounded-xl">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <div>
               <p className="text-sm uppercase tracking-wide text-blue-100 mb-1">
                 Hồ sơ nhà tuyển dụng
@@ -186,7 +186,7 @@ function EmployerProfilePage() {
         </div>
 
         {/* Content */}
-        <div className="max-w-7xl mx-auto py-8">
+        <div className="py-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Personal Information */}
             <div className="bg-white rounded-lg border border-gray-200">
