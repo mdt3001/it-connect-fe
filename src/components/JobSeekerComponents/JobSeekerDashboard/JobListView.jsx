@@ -20,9 +20,19 @@ const JobListView = ({ job, onClick, onToggleSave, onApply }) => {
           {/* Left section - Job info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start gap-4 mb-4">
-              {/* Company logo placeholder */}
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Building2 className="w-8 h-8 text-white" />
+              {/* Company logo */}
+              <div className="w-16 h-16 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                {job.companyLogo ? (
+                  <img
+                    src={job.companyLogo}
+                    alt={job.company}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <Building2 className="w-8 h-8 text-white" />
+                  </div>
+                )}
               </div>
 
               <div className="flex-1 min-w-0">

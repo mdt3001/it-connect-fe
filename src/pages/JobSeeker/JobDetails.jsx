@@ -132,8 +132,18 @@ function JobDetails() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white border border-gray-200 rounded-2xl shadow">
           <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
             <div className="flex-1 flex items-center gap-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-                <Building2 className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 rounded-2xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                {jobDetails.companyLogo ? (
+                  <img
+                    src={jobDetails.companyLogo}
+                    alt={jobDetails.company}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <Building2 className="w-10 h-10 text-white" />
+                  </div>
+                )}
               </div>
               <div className="flex-1">
                 <h1 className="text-2xl md:text-3xl font-semibold">

@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
 
-export const useJobFilters = (user) => {
+export const useJobFilters = (user, authLoading = false) => {
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Start with true
   const [error, setError] = useState(null);
 
   const [pagination, setPagination] = useState({
@@ -80,8 +80,11 @@ export const useJobFilters = (user) => {
   };
 
   useEffect(() => {
-    fetchJobs(appliedFilters, 0);
-  }, [appliedFilters, user]);
+    // Chỉ fetch khi AuthContext đã load xong
+    if (!authLoading) {
+      fetchJobs(appliedFilters, 0);
+    }
+  }, [appliedFilters, user, authLoading]);
 
   const handleTempFilterChange = (key, value) => {
     setTempFilters((prev) => ({ ...prev, [key]: value }));

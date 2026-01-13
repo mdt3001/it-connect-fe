@@ -18,7 +18,7 @@ import { useJobFilters } from "../../hooks/jobseeker/useJobFilters";
 import { s } from "framer-motion/client";
 
 const JobSeekerDashboard = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   const [viewMode, setViewMode] = useState("grid");
@@ -28,6 +28,10 @@ const JobSeekerDashboard = () => {
     salary: true,
     category: true,
   });
+
+  // Apply Job Modal state
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
+  const [selectedJobForApply, setSelectedJobForApply] = useState(null);
 
   const {
     jobs,
@@ -41,7 +45,7 @@ const JobSeekerDashboard = () => {
     clearAllFilters,
     handlePageChange,
     fetchJobs,
-  } = useJobFilters(user);
+  } = useJobFilters(user, authLoading);
 
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
@@ -71,14 +75,21 @@ const JobSeekerDashboard = () => {
   };
 
   const applyToJob = async (jobId) => {
-    try {
-      await axiosInstance.post(API_PATHS.APPLICATION.APPLY_TO_JOB(jobId));
-      toast.success("Ứng tuyển thành công");
-      fetchJobs(appliedFilters, pagination.pageNo);
-    } catch (error) {
-      toast.error("Đã xảy ra lỗi");
-      console.error("Error applying to job:", error);
+    if (!user) {
+      toast.error("Vui lòng đăng nhập để ứng tuyển");
+      return;
     }
+    // Find job details for the modal
+    const job = jobs.find((j) => j.jobId === jobId);
+    setSelectedJobForApply({
+      id: jobId,
+      title: job?.title || "Công việc",
+    });
+    setApplyModalOpen(true);
+  };
+
+  const handleApplySuccess = () => {
+    fetchJobs(appliedFilters, pagination.pageNo);
   };
 
   const formatSalary = (salaryMin, salaryMax) => {
@@ -106,6 +117,7 @@ const JobSeekerDashboard = () => {
     id: job.jobId,
     title: job.title,
     company: job.companyName,
+    companyLogo: job.companyLogo,
     location: job.location,
     type: formatJobType(job.type),
     category: job.category,

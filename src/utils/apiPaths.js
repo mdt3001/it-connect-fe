@@ -5,6 +5,7 @@ export const API_PATHS = {
     GET_PROFILE: "/api/auth/profile",
     UPDATE_PROFILE: (id) => `/api/user/${id}`,
     DELETE_RESUME: "/api/user/resume",
+    CHANGE_PASSWORD: (id) => `/api/user/${id}/change-password`,
 
     // Forgot password
     FORGOT_PASSWORD: "/api/auth/password-reset/send-code",

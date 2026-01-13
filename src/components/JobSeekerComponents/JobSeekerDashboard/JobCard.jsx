@@ -19,8 +19,18 @@ const JobCard = ({ job, onClick, onToggleSave, onApply }) => {
         {/* Company logo */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-4">
-            <div className="mb-2 w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <Building2 className="w-7 h-7 text-white" />
+            <div className="mb-2 w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden">
+              {job.companyLogo ? (
+                <img
+                  src={job.companyLogo}
+                  alt={job.company}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <Building2 className="w-7 h-7 text-white" />
+                </div>
+              )}
             </div>
             <div>
               <h1 className="text-md font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
