@@ -28,7 +28,7 @@ function SavedJobs() {
     try {
       setLoading(true);
       const response = await axiosInstance.get(API_PATHS.JOB.GET_SAVED_JOBS, {
-        params: { pageNo: 0, pageSize: 100 }
+        params: { pageNo: 0, pageSize: 100 },
       });
       setSavedJobs(response.data.result?.items || []);
     } catch (error) {

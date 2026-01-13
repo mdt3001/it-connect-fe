@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { User, FileText, LogOut, ChevronDown } from "lucide-react";
+import { User, FileText, LogOut, ChevronDown, Briefcase } from "lucide-react";
 import { a } from "framer-motion/client";
 
 const ProfileDropdown = ({
@@ -46,6 +46,16 @@ const ProfileDropdown = ({
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+          {role !== "employer" && (
+            <Link
+              to="/applied-jobs"
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+              onClick={() => onToggle()}
+            >
+              <Briefcase className="w-4 h-4 mr-3" />
+              Việc đã ứng tuyển
+            </Link>
+          )}
           <Link
             to={role === "employer" ? "/company-profile" : "/profile"}
             className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"

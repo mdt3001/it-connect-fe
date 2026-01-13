@@ -19,6 +19,7 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 import JobSeekerDashboard from "./pages/JobSeeker/JobSeekerDashboard";
 import JobDetails from "./pages/JobSeeker/JobDetails";
 import SavedJobs from "./pages/JobSeeker/SavedJobs";
+import AppliedJobs from "./pages/JobSeeker/AppliedJobs";
 import UserProfile from "./pages/JobSeeker/UserProfile";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import CompanyProfilePage from "./pages/Employer/EmployerProfilePage";
@@ -47,6 +48,7 @@ function App() {
             <Route path="/find-jobs" element={<JobSeekerDashboard />} />
             <Route path="/job/:jobId" element={<JobDetails />} />
             <Route path="/saved-jobs" element={<SavedJobs />} />
+            <Route path="/applied-jobs" element={<AppliedJobs />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/employer-settings" element={<SettingsPage />} />

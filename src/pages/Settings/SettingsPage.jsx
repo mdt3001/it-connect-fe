@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Lock, Eye, EyeOff, Save, Loader2, CheckCircle } from "lucide-react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
+import Navbar from "../../components/layout/Navbar";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
@@ -141,145 +142,162 @@ const SettingsPage = () => {
     }
   };
 
-  return (
-    <DashboardLayout>
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Cài đặt</h1>
-            <p className="mt-2 text-sm text-gray-600">
-              Quản lý cài đặt tài khoản và bảo mật của bạn
+  const isJobSeeker = user?.role === "jobseeker";
+
+  const content = (
+    <div
+      className={`min-h-screen ${
+        isJobSeeker
+          ? "bg-gradient-to-br from-blue-50 via-white to-purple-50"
+          : "bg-gray-50"
+      } py-8`}
+    >
+      <div
+        className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 ${
+          isJobSeeker ? "pt-16" : ""
+        }`}
+      >
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Cài đặt</h1>
+          <p className="mt-2 text-sm text-gray-600">
+            Quản lý cài đặt tài khoản và bảo mật của bạn
+          </p>
+        </div>
+
+        {/* Change Password Section */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Đổi mật khẩu
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">
+              Cập nhật mật khẩu để bảo vệ tài khoản của bạn
             </p>
           </div>
 
-          {/* Change Password Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">
-                Đổi mật khẩu
-              </h2>
-              <p className="mt-1 text-sm text-gray-500">
-                Cập nhật mật khẩu để bảo vệ tài khoản của bạn
-              </p>
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <PasswordInput
+              label="Mật khẩu hiện tại"
+              field="currentPassword"
+              value={formData.currentPassword}
+              placeholder="Nhập mật khẩu hiện tại"
+              onChange={(e) =>
+                handleInputChange("currentPassword", e.target.value)
+              }
+              error={errors.currentPassword}
+              showPassword={showPasswords.currentPassword}
+              onToggleVisibility={() =>
+                togglePasswordVisibility("currentPassword")
+              }
+            />
+            <PasswordInput
+              label="Mật khẩu mới"
+              field="newPassword"
+              value={formData.newPassword}
+              placeholder="Nhập mật khẩu mới"
+              onChange={(e) => handleInputChange("newPassword", e.target.value)}
+              error={errors.newPassword}
+              showPassword={showPasswords.newPassword}
+              onToggleVisibility={() => togglePasswordVisibility("newPassword")}
+            />
+            <PasswordInput
+              label="Xác nhận mật khẩu mới"
+              field="confirmPassword"
+              value={formData.confirmPassword}
+              placeholder="Nhập lại mật khẩu mới"
+              onChange={(e) =>
+                handleInputChange("confirmPassword", e.target.value)
+              }
+              error={errors.confirmPassword}
+              showPassword={showPasswords.confirmPassword}
+              onToggleVisibility={() =>
+                togglePasswordVisibility("confirmPassword")
+              }
+            />
+
+            {/* Password Requirements */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h3 className="text-sm font-medium text-blue-900 mb-2">
+                Yêu cầu mật khẩu:
+              </h3>
+              <ul className="space-y-1">
+                <li className="flex items-center text-sm">
+                  <CheckCircle
+                    className={`w-4 h-4 mr-2 ${
+                      formData.newPassword.length >= 8
+                        ? "text-green-500"
+                        : "text-gray-300"
+                    }`}
+                  />
+                  <span
+                    className={
+                      formData.newPassword.length >= 8
+                        ? "text-green-700"
+                        : "text-gray-500"
+                    }
+                  >
+                    Ít nhất 8 ký tự
+                  </span>
+                </li>
+                <li className="flex items-center text-sm">
+                  <CheckCircle
+                    className={`w-4 h-4 mr-2 ${
+                      formData.newPassword === formData.confirmPassword &&
+                      formData.confirmPassword !== ""
+                        ? "text-green-500"
+                        : "text-gray-300"
+                    }`}
+                  />
+                  <span
+                    className={
+                      formData.newPassword === formData.confirmPassword &&
+                      formData.confirmPassword !== ""
+                        ? "text-green-700"
+                        : "text-gray-500"
+                    }
+                  >
+                    Mật khẩu xác nhận khớp
+                  </span>
+                </li>
+              </ul>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <PasswordInput
-                label="Mật khẩu hiện tại"
-                field="currentPassword"
-                value={formData.currentPassword}
-                placeholder="Nhập mật khẩu hiện tại"
-                onChange={(e) =>
-                  handleInputChange("currentPassword", e.target.value)
-                }
-                error={errors.currentPassword}
-                showPassword={showPasswords.currentPassword}
-                onToggleVisibility={() =>
-                  togglePasswordVisibility("currentPassword")
-                }
-              />
-              <PasswordInput
-                label="Mật khẩu mới"
-                field="newPassword"
-                value={formData.newPassword}
-                placeholder="Nhập mật khẩu mới"
-                onChange={(e) =>
-                  handleInputChange("newPassword", e.target.value)
-                }
-                error={errors.newPassword}
-                showPassword={showPasswords.newPassword}
-                onToggleVisibility={() =>
-                  togglePasswordVisibility("newPassword")
-                }
-              />
-              <PasswordInput
-                label="Xác nhận mật khẩu mới"
-                field="confirmPassword"
-                value={formData.confirmPassword}
-                placeholder="Nhập lại mật khẩu mới"
-                onChange={(e) =>
-                  handleInputChange("confirmPassword", e.target.value)
-                }
-                error={errors.confirmPassword}
-                showPassword={showPasswords.confirmPassword}
-                onToggleVisibility={() =>
-                  togglePasswordVisibility("confirmPassword")
-                }
-              />
-
-              {/* Password Requirements */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="text-sm font-medium text-blue-900 mb-2">
-                  Yêu cầu mật khẩu:
-                </h3>
-                <ul className="space-y-1">
-                  <li className="flex items-center text-sm">
-                    <CheckCircle
-                      className={`w-4 h-4 mr-2 ${
-                        formData.newPassword.length >= 8
-                          ? "text-green-500"
-                          : "text-gray-300"
-                      }`}
-                    />
-                    <span
-                      className={
-                        formData.newPassword.length >= 8
-                          ? "text-green-700"
-                          : "text-gray-500"
-                      }
-                    >
-                      Ít nhất 8 ký tự
-                    </span>
-                  </li>
-                  <li className="flex items-center text-sm">
-                    <CheckCircle
-                      className={`w-4 h-4 mr-2 ${
-                        formData.newPassword === formData.confirmPassword &&
-                        formData.confirmPassword !== ""
-                          ? "text-green-500"
-                          : "text-gray-300"
-                      }`}
-                    />
-                    <span
-                      className={
-                        formData.newPassword === formData.confirmPassword &&
-                        formData.confirmPassword !== ""
-                          ? "text-green-700"
-                          : "text-gray-500"
-                      }
-                    >
-                      Mật khẩu xác nhận khớp
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Đang xử lý...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="w-5 h-5 mr-2" />
-                      Đổi mật khẩu
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Đang xử lý...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-5 h-5 mr-2" />
+                    Đổi mật khẩu
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
+
+  if (isJobSeeker) {
+    return (
+      <>
+        <Navbar />
+        {content}
+      </>
+    );
+  }
+
+  return <DashboardLayout>{content}</DashboardLayout>;
 };
 
 export default SettingsPage;
