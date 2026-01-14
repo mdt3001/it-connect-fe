@@ -23,16 +23,13 @@ const Navbar = () => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [profileDropdownOpen]);
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#FCFBFB] backdrop-blur-sm border-b border-gray-100">
       <div className="container mx-auto px-4 sm:px-20">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center justify-between space-x-8">
             {/* logo */}
             <Link to="/" className="flex items-center space-x-3 cursor-pointer">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to bg-purple-600 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900">ITConnect</span>
+              <img src={logo} alt="ITConnect" className="h-16 w-auto" />
             </Link>
             <div className="hidden md:flex items-center space-x-4">
               <Link

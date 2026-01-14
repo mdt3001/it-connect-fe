@@ -163,7 +163,9 @@ const AppllicantProfilePreview = ({
                       return;
                     }
                     // Sử dụng Google Docs Viewer để xem file
-                    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(selectedApplication.resume)}&embedded=true`;
+                    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(
+                      selectedApplication.resume
+                    )}&embedded=true`;
                     window.open(viewerUrl, "_blank");
                   }}
                   disabled={!selectedApplication.resume}

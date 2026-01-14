@@ -15,6 +15,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { NAVIGATION_MENU } from "../../utils/data";
 import ProfileDropdown from "../../components/layout/ProfileDropdown";
+import logo from "../../assets/logo.png";
 
 // Memoized NavigationItem để tránh re-render không cần thiết
 const NavigationItem = memo(({ item, isActive, onClick, isCollapsed }) => {
@@ -115,7 +116,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
       {/* Thêm role cho accessibility */}
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 transition-transform duration-300 transform bg-white border-r border-gray-200 shadow-lg ${
+        className={`fixed inset-y-0 left-0 z-50 transition-transform duration-300 transform bg-[#FCFBFB] border-r border-gray-200 shadow-lg ${
           isMobile
             ? sidebarOpen
               ? "translate-x-0"
@@ -132,14 +133,10 @@ const DashboardLayout = ({ children, activeMenu }) => {
             </div>
           ) : (
             <Link
-              to="/"
-              className="flex items-center space-x-3"
-              aria-label="Home"
+              to="/employer-dashboard"
+              className="flex items-center space-x-3 cursor-pointer"
             >
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-5 h-5 text-white" aria-hidden="true" />
-              </div>
-              <span className="font-semibold text-gray-900">IT Connect</span>
+              <img src={logo} alt="ITConnect" className="h-15 w-auto" />
             </Link>
           )}
         </div>

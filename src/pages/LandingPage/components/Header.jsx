@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { useAuth } from "../../../context/AuthContext";
 import ProfileDropdown from "../../../components/layout/ProfileDropdown";
 import { useState, useEffect } from "react";
+import logo from "../../../assets/logo.png";
+import { Link } from "react-router-dom";
 
 function Header() {
   const { isAuthenticated, user, logout } = useAuth();
@@ -33,16 +35,15 @@ function Header() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="fixed  top-0 left-0 right-0 bg-white backdrop:blur-sm border-b border-gray-100"
+      className="fixed  top-0 left-0 right-0 bg-[#FCFBFB] backdrop:blur-sm border-b border-gray-100"
     >
       <div className="container mx-auto px-4 sm:px-20">
         <div className="flex items-center justify-between h-16">
           {/* logo */}
           <div className="flex items-center space-x-3 cursor-pointer">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to bg-purple-600 rounded-lg flex items-center justify-center">
-              <Briefcase className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">ITConnect</span>
+            <Link to="/" className="flex items-center space-x-3 cursor-pointer">
+              <img src={logo} alt="ITConnect" className="h-16 w-auto" />
+            </Link>
           </div>
 
           {/* nav */}
@@ -95,8 +96,8 @@ function Header() {
                     onToggle={toggleProfileDropdown}
                     avatar={user?.avatar}
                     companyName={user?.name}
-                      email={user?.email}
-                      role={user?.role}
+                    email={user?.email}
+                    role={user?.role}
                     onLogout={handleLogout}
                   />
                 )}

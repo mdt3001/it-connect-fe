@@ -59,14 +59,11 @@ function UserProfile() {
     setUploading((prev) => ({ ...prev, [type]: true }));
     try {
       let fileUrl = "";
-      
+
       if (type === "resume") {
         // Use uploadCV for CV files
         const uploadResponse = await uploadCV(file);
-        fileUrl =
-          uploadResponse?.result?.cvUrl ||
-          uploadResponse?.cvUrl ||
-          "";
+        fileUrl = uploadResponse?.result?.cvUrl || uploadResponse?.cvUrl || "";
       } else {
         // Use uploadImage for avatar
         const uploadResponse = await uploadImage(file);

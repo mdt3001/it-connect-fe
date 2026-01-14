@@ -1,13 +1,24 @@
 import React from "react";
 import { Briefcase, Facebook, Github, Linkedin, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import logo from "../../../assets/logo.png";
 
 function Footer() {
   const year = new Date().getFullYear();
 
   const links = [
-    { title: "Về ITConnect", items: ["Giới thiệu", "Tuyển dụng", "Blog", "Liên hệ"] },
-    { title: "Dành cho Ứng viên", items: ["Tìm việc", "Tạo hồ sơ", "Hướng dẫn", "Bảo mật"] },
-    { title: "Dành cho Doanh nghiệp", items: ["Đăng tin", "Quản lý ứng tuyển", "Bảng giá", "Hỗ trợ"] },
+    {
+      title: "Về ITConnect",
+      items: ["Giới thiệu", "Tuyển dụng", "Blog", "Liên hệ"],
+    },
+    {
+      title: "Dành cho Ứng viên",
+      items: ["Tìm việc", "Tạo hồ sơ", "Hướng dẫn", "Bảo mật"],
+    },
+    {
+      title: "Dành cho Doanh nghiệp",
+      items: ["Đăng tin", "Quản lý ứng tuyển", "Bảng giá", "Hỗ trợ"],
+    },
   ];
 
   const socials = [
@@ -24,13 +35,16 @@ function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900">ITConnect</span>
+              <Link
+                to="/"
+                className="flex items-center space-x-3 cursor-pointer"
+              >
+                <img src={logo} alt="ITConnect" className="h-16 w-auto" />
+              </Link>
             </div>
             <p className="mt-3 text-gray-600">
-              Nền tảng kết nối cơ hội việc làm IT giữa ứng viên và nhà tuyển dụng.
+              Nền tảng kết nối cơ hội việc làm IT giữa ứng viên và nhà tuyển
+              dụng.
             </p>
             <div className="mt-4 flex items-center gap-3">
               {socials.map((s, i) => {
@@ -56,7 +70,9 @@ function Footer() {
               <ul className="space-y-2">
                 {col.items.map((item, i) => (
                   <li key={i}>
-                    <a className="text-gray-600 hover:text-gray-900 cursor-pointer transition">{item}</a>
+                    <a className="text-gray-600 hover:text-gray-900 cursor-pointer transition">
+                      {item}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -71,7 +87,9 @@ function Footer() {
           <div className="text-sm text-gray-600">
             <a className="hover:text-gray-900 cursor-pointer">Điều khoản</a>
             <span className="mx-2">•</span>
-            <a className="hover:text-gray-900 cursor-pointer">Chính sách bảo mật</a>
+            <a className="hover:text-gray-900 cursor-pointer">
+              Chính sách bảo mật
+            </a>
             <span className="mx-2">•</span>
             <a className="hover:text-gray-900 cursor-pointer">Cookie</a>
           </div>

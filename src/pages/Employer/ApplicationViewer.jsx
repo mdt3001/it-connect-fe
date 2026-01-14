@@ -31,7 +31,7 @@ function ApplicationViewer() {
 
   const [pageNo, setPageNo] = useState(0);
   const [pageSize, setPageSize] = useState(8);
-  
+
   const handleDownloadResume = (resume) => {
     if (!resume) {
       toast.error("Ứng viên chưa tải lên CV");
@@ -48,7 +48,9 @@ function ApplicationViewer() {
       return;
     }
     // Sử dụng Google Docs Viewer để xem file (hỗ trợ PDF, DOC, DOCX)
-    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(resume)}&embedded=true`;
+    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(
+      resume
+    )}&embedded=true`;
     window.open(viewerUrl, "_blank");
   };
 
@@ -193,7 +195,9 @@ function ApplicationViewer() {
                             </p>
                             <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
-                              <span>Ứng tuyển {formatDate(application.createdAt)}</span>
+                              <span>
+                                Ứng tuyển {formatDate(application.createdAt)}
+                              </span>
                             </p>
                           </div>
                         </div>
@@ -201,16 +205,18 @@ function ApplicationViewer() {
                         <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
                           <StatusBadge status={application.status} />
                           <button
-                            onClick={() =>
-                              handleViewResume(application.resume)
-                            }
+                            onClick={() => handleViewResume(application.resume)}
                             disabled={!application.resume}
                             className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md ${
                               application.resume
                                 ? "text-white bg-blue-600 hover:bg-blue-700"
                                 : "text-gray-400 bg-gray-100 border border-gray-200 cursor-not-allowed"
                             }`}
-                            title={application.resume ? "Xem CV" : "Ứng viên chưa có CV"}
+                            title={
+                              application.resume
+                                ? "Xem CV"
+                                : "Ứng viên chưa có CV"
+                            }
                           >
                             <Eye className="w-4 h-4 mr-2" />
                             {application.resume ? "Xem CV" : "Không có CV"}
