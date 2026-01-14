@@ -31,10 +31,25 @@ function ApplicationViewer() {
 
   const [pageNo, setPageNo] = useState(0);
   const [pageSize, setPageSize] = useState(8);
+  
   const handleDownloadResume = (resume) => {
-    // TODO: implement real download using file URL/Blob if có
-    if (!resume) return;
+    if (!resume) {
+      toast.error("Ứng viên chưa tải lên CV");
+      return;
+    }
+    // Mở CV trong tab mới - nếu là PDF, trình duyệt sẽ hiển thị
+    // Nếu không, sẽ tải về
     window.open(resume, "_blank");
+  };
+
+  const handleViewResume = (resume) => {
+    if (!resume) {
+      toast.error("Ứng viên chưa tải lên CV");
+      return;
+    }
+    // Sử dụng Google Docs Viewer để xem file (hỗ trợ PDF, DOC, DOCX)
+    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(resume)}&embedded=true`;
+    window.open(viewerUrl, "_blank");
   };
 
   const fetchApplications = async () => {
@@ -187,12 +202,18 @@ function ApplicationViewer() {
                           <StatusBadge status={application.status} />
                           <button
                             onClick={() =>
-                              handleDownloadResume(application.resume)
+                              handleViewResume(application.resume)
                             }
-                            className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                            disabled={!application.resume}
+                            className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                              application.resume
+                                ? "text-white bg-blue-600 hover:bg-blue-700"
+                                : "text-gray-400 bg-gray-100 border border-gray-200 cursor-not-allowed"
+                            }`}
+                            title={application.resume ? "Xem CV" : "Ứng viên chưa có CV"}
                           >
-                            <Download className="w-4 h-4 mr-2" />
-                            Resume
+                            <Eye className="w-4 h-4 mr-2" />
+                            {application.resume ? "Xem CV" : "Không có CV"}
                           </button>
                           <button
                             onClick={() => setSelectedApplication(application)}

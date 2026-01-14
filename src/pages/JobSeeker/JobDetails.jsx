@@ -16,6 +16,7 @@ import Navbar from "../../components/layout/Navbar";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import toast from "react-hot-toast";
 import StatusBadge from "../../components/EmployerComponents/Application/StatusBadge";
+import ApplyJobModal from "../../components/JobSeekerComponents/ApplyJobModal";
 
 function JobDetails() {
   const { user, isAuthenticated } = useAuth();
@@ -24,7 +25,7 @@ function JobDetails() {
 
   const [jobDetails, setJobDetails] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [applying, setApplying] = useState(false);
+  const [showApplyModal, setShowApplyModal] = useState(false);
 
   const formatJobType = (type) => {
     const typeMap = {
@@ -56,18 +57,9 @@ function JobDetails() {
     }
   };
 
-  const applyToJob = async () => {
-    try {
-      setApplying(true);
-      await axiosInstance.post(API_PATHS.APPLICATION.APPLY_TO_JOB(jobId));
-      toast.success("Đã nộp đơn thành công");
-      getJobDetailsById();
-    } catch (error) {
-      console.error("Error applying to job:", error);
-      toast.error("Không thể nộp đơn cho công việc này");
-    } finally {
-      setApplying(false);
-    }
+  const handleApplySuccess = () => {
+    setShowApplyModal(false);
+    getJobDetailsById();
   };
 
   useEffect(() => {
@@ -163,11 +155,10 @@ function JobDetails() {
             ) : (
               // Nếu chưa ứng tuyển
               <button
-                onClick={applyToJob}
-                disabled={applying}
+                onClick={() => setShowApplyModal(true)}
                 className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium flex items-center gap-2"
               >
-                {applying ? "Đang nộp..." : "Ứng tuyển"}
+                Ứng tuyển
                 <ExternalLink className="w-4 h-4" />
               </button>
             )}
@@ -229,6 +220,15 @@ function JobDetails() {
           </div>
         </div>
       </div>
+
+      {/* Apply Job Modal */}
+      <ApplyJobModal
+        isOpen={showApplyModal}
+        onClose={() => setShowApplyModal(false)}
+        jobId={jobId}
+        jobTitle={jobDetails?.title}
+        onSuccess={handleApplySuccess}
+      />
     </div>
   );
 }

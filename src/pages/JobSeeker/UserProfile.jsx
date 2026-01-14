@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-hot-toast";
-import uploadImage from "../../utils/uploadImage";
+import uploadImage, { uploadCV } from "../../utils/uploadImage";
 import { API_PATHS } from "../../utils/apiPaths";
 import Navbar from "../../components/layout/Navbar";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -58,19 +58,31 @@ function UserProfile() {
     if (!file) return;
     setUploading((prev) => ({ ...prev, [type]: true }));
     try {
-      const uploadResponse = await uploadImage(file);
-      const imageUrl =
-        uploadResponse?.result?.imageUrl ||
-        uploadResponse?.result?.url ||
-        uploadResponse?.url ||
-        uploadResponse?.imageUrl ||
-        "";
+      let fileUrl = "";
+      
+      if (type === "resume") {
+        // Use uploadCV for CV files
+        const uploadResponse = await uploadCV(file);
+        fileUrl =
+          uploadResponse?.result?.cvUrl ||
+          uploadResponse?.cvUrl ||
+          "";
+      } else {
+        // Use uploadImage for avatar
+        const uploadResponse = await uploadImage(file);
+        fileUrl =
+          uploadResponse?.result?.imageUrl ||
+          uploadResponse?.result?.url ||
+          uploadResponse?.url ||
+          uploadResponse?.imageUrl ||
+          "";
+      }
 
-      if (!imageUrl) {
+      if (!fileUrl) {
         throw new Error("Không nhận được đường dẫn file");
       }
 
-      setFormData((prev) => ({ ...prev, [type]: imageUrl }));
+      setFormData((prev) => ({ ...prev, [type]: fileUrl }));
       toast.success(
         type === "avatar" ? "Đã cập nhật ảnh đại diện" : "Đã tải lên CV"
       );

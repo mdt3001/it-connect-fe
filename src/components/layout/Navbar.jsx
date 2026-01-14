@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import ProfileDropdown from "./ProfileDropdown";
 import { useState, useEffect } from "react";
 import { u } from "framer-motion/client";
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();

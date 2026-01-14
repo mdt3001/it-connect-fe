@@ -23,4 +23,26 @@ export const uploadImage = async (imageFile) => {
   }
 };
 
+export const uploadCV = async (cvFile) => {
+  const formData = new FormData();
+  formData.append("file", cvFile);
+
+  try {
+    const response = await axiosInstance.post(
+      API_PATHS.IMAGE.UPLOAD_CV,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("CV uploaded successfully:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading CV:", error);
+    throw error;
+  }
+};
+
 export default uploadImage;

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { API_PATHS } from "../../../utils/apiPaths";
 import toast from "react-hot-toast";
-import { X, Download, CheckCircle2, User } from "lucide-react";
+import { X, Download, CheckCircle2, User, Eye } from "lucide-react";
 
 const STATUS_OPTIONS = [
   { value: "APPLIED", label: "Đã ứng tuyển" },
@@ -155,15 +155,42 @@ const AppllicantProfilePreview = ({
 
             {/* Actions */}
             <div className="flex flex-col items-center gap-4">
-              <button
-                onClick={() =>
-                  handleDownloadResume?.(selectedApplication.resume)
-                }
-                className="cursor-pointer inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Resume
-              </button>
+              <div className="flex gap-2 w-full">
+                <button
+                  onClick={() => {
+                    if (!selectedApplication.resume) {
+                      toast.error("Ứng viên chưa tải lên CV");
+                      return;
+                    }
+                    // Sử dụng Google Docs Viewer để xem file
+                    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(selectedApplication.resume)}&embedded=true`;
+                    window.open(viewerUrl, "_blank");
+                  }}
+                  disabled={!selectedApplication.resume}
+                  className={`cursor-pointer inline-flex items-center justify-center flex-1 px-4 py-2 text-sm font-medium border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    selectedApplication.resume
+                      ? "text-white bg-blue-600 hover:bg-blue-700"
+                      : "text-gray-400 bg-gray-200 cursor-not-allowed"
+                  }`}
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  {selectedApplication.resume ? "Xem CV" : "Chưa có CV"}
+                </button>
+                <button
+                  onClick={() =>
+                    handleDownloadResume?.(selectedApplication.resume)
+                  }
+                  disabled={!selectedApplication.resume}
+                  className={`cursor-pointer inline-flex items-center justify-center px-4 py-2 text-sm font-medium border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 ${
+                    selectedApplication.resume
+                      ? "text-gray-700 bg-white border-gray-300 hover:bg-gray-50"
+                      : "text-gray-400 bg-gray-100 border-gray-200 cursor-not-allowed"
+                  }`}
+                  title="Tải CV về máy"
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+              </div>
 
               <div className="flex flex-col items-start gap-3 w-full relative">
                 <label className="text-sm text-gray-600">
