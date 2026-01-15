@@ -26,6 +26,7 @@ import CompanyProfilePage from "./pages/Employer/EmployerProfilePage";
 import EditProfileDetails from "./pages/Employer/EditProfileDetails";
 import SettingsPage from "./pages/Settings/SettingsPage";
 import { AuthProvider } from "./context/AuthContext"; // Import AuthProvider
+import CreateCV from "./pages/JobSeeker/ExportCv";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -45,6 +46,7 @@ function App() {
             <Route path="/verify-reset-code" element={<VerifyResetCode />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
+            <Route path="/create-cv" element={<CreateCV />} />
             <Route path="/find-jobs" element={<JobSeekerDashboard />} />
             <Route path="/job/:jobId" element={<JobDetails />} />
             <Route path="/saved-jobs" element={<SavedJobs />} />
