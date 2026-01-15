@@ -33,25 +33,25 @@ const Navbar = () => {
             </Link>
             <div className="hidden md:flex items-center space-x-4">
               <Link
-                to="/"
+                to="/find-jobs"
                 className="text-gray-600 font-semibold hover:text-blue-600"
               >
                 Việc làm
               </Link>
               <Link
-                to="/saved-jobs"
+                to="/create-cv"
                 className="text-gray-600 font-semibold hover:text-blue-600"
               >
                 Tạo CV
               </Link>
               <Link
-                to="/"
+                to="/career-guide"
                 className="text-gray-600 font-semibold hover:text-blue-600"
               >
                 Cẩm nang nghề nghiệp
               </Link>
               <Link
-                to="/saved-jobs"
+                to="/interview-practice"
                 className="text-gray-600 font-semibold hover:text-blue-600"
               >
                 Luyện phỏng vấn với AI

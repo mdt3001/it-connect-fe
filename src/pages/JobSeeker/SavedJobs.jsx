@@ -99,7 +99,6 @@ function SavedJobs() {
         <Navbar />
         <div className="pt-20 flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <Bookmark className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               Đăng nhập để xem việc làm đã lưu
             </h2>
@@ -130,17 +129,16 @@ function SavedJobs() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
-      <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+      <div className="pt-30 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg px-6 py-8 rounded-xl mb-6">
+          <div className="bg-white   text-gray-900 shadow-lg px-6 py-8 rounded-xl mb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-semibold flex items-center gap-3">
-                  <Bookmark className="w-8 h-8" />
                   Việc làm đã lưu
                 </h1>
-                <p className="text-blue-100 mt-2">
+                <p className="text-gray-500 mt-2">
                   Bạn đã lưu {savedJobs.length} việc làm
                 </p>
               </div>
@@ -150,7 +148,7 @@ function SavedJobs() {
               >
                 <Search className="w-4 h-4" />
                 Tìm việc mới
-              </button>
+              </button> 
             </div>
           </div>
 

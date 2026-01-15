@@ -62,33 +62,33 @@ function AppliedJobs() {
   };
 
   const getStatusInfo = (status) => {
-      const statusMap = {
-        APPLIED: {
-          label: "Đã ứng tuyển",
-          color: "bg-gray-100 text-gray-800",
-          icon: Clock,
-        },
-        PENDING: {
-          label: "Đang chờ",
-          color: "bg-yellow-100 text-yellow-800",
-          icon: Clock,
-        },
-        REVIEWING: {
-          label: "Đang xem xét",
-          color: "bg-blue-100 text-blue-800",
-          icon: AlertCircle,
-        },
-        ACCEPTED: {
-          label: "Đã chấp nhận",
-          color: "bg-green-100 text-green-800",
-          icon: CheckCircle,
-        },
-        REJECTED: {
-          label: "Đã từ chối",
-          color: "bg-red-100 text-red-800",
-          icon: XCircle,
-        },
-      };
+    const statusMap = {
+      APPLIED: {
+        label: "Đã ứng tuyển",
+        color: "bg-gray-100 text-gray-800",
+        icon: Clock,
+      },
+      PENDING: {
+        label: "Đang chờ",
+        color: "bg-yellow-100 text-yellow-800",
+        icon: Clock,
+      },
+      REVIEWING: {
+        label: "Đang xem xét",
+        color: "bg-blue-100 text-blue-800",
+        icon: AlertCircle,
+      },
+      ACCEPTED: {
+        label: "Đã chấp nhận",
+        color: "bg-green-100 text-green-800",
+        icon: CheckCircle,
+      },
+      REJECTED: {
+        label: "Đã từ chối",
+        color: "bg-red-100 text-red-800",
+        icon: XCircle,
+      },
+    };
     return (
       statusMap[status] || {
         label: status,
@@ -143,17 +143,16 @@ function AppliedJobs() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
-      <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+      <div className="pt-30 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg px-6 py-8 rounded-xl mb-6">
+          <div className="bg-white   text-gray-900 shadow-lg px-6 py-8 rounded-xl mb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-semibold flex items-center gap-3">
-                  <Briefcase className="w-8 h-8" />
                   Việc làm đã ứng tuyển
                 </h1>
-                <p className="text-blue-100 mt-2">
+                <p className="text-gray-500 mt-2">
                   Bạn đã ứng tuyển {applications.length} việc làm
                 </p>
               </div>

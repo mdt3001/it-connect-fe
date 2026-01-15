@@ -4,7 +4,7 @@ import {
   Building2,
   Clock,
   Users,
-  DollarSign,
+  HandCoins ,
   ExternalLink,
 } from "lucide-react";
 import moment from "moment";
@@ -179,10 +179,10 @@ function JobDetails() {
           <div className="mt-6 rounded-xl bg-emerald-50 border border-emerald-100 p-4 md:p-5">
             <div className="flex items-center">
               <div className="h-12 w-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center">
-                <DollarSign size={24} />
+                <HandCoins  size={24} />
               </div>
               <div className="ml-4">
-                <div className="text-sm text-emerald-700">Compensation</div>
+                <div className="text-sm text-emerald-700">Mức Lương</div>
                 <div className="text-lg font-semibold text-emerald-900">
                   {jobDetails.salaryMin || jobDetails.salaryMax
                     ? `${jobDetails.salaryMin || 0} - ${

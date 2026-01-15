@@ -157,14 +157,6 @@ const SettingsPage = () => {
           isJobSeeker ? "pt-16" : ""
         }`}
       >
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Cài đặt</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            Quản lý cài đặt tài khoản và bảo mật của bạn
-          </p>
-        </div>
-
         {/* Change Password Section */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="p-6 border-b border-gray-200">
